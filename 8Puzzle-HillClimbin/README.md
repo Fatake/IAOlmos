@@ -2,10 +2,13 @@
 
 En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del problema 8 puzzle con el algoritmo de Hill Climbin
 
-
 ---
 
 ### Forma de Ejecutar
+
+Este programa fue compilado en java `jdk-16.0.2`
+
+
 
 Compilar
 

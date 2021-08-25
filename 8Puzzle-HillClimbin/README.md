@@ -8,27 +8,28 @@ En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del 
 
 Este programa fue compilado en java `jdk-16.0.2`
 
-
-
 Compilar
 
 ```bash
-$javac *.java
+javac *.java
 ```
 
 Ejecutar con Archivo Inicial
 
 ```bash
-$java bin -f startFile
+java bin inputFile
 ```
 
-Ejecutar con modo ayuda
+Con script
 
 ```bash
-$java bin -h
+$ chmod 754 ejecuta.sh
+$ ./ejecuta.sh
 ```
 
 ---
+
+
 
 ### Formato del Archivo Input
 

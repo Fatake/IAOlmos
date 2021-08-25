@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.sound.sampled.LineEvent;
+
 
 public class Puzzle {
 
@@ -41,13 +43,13 @@ public class Puzzle {
         } catch (FileNotFoundException e) {
             System.out.println("[!] Archivo No encontrado");
             e.printStackTrace();
-            return null;
+            System.exit(1);
         }
         return lineas;
     }
     public static void main(String[] args) {
         Puzzle p = new Puzzle();
-        System.out.println("Programa que explora el 8puzzle");
+        System.out.println("Programa que explora el 8puzzle con Hill Climbing");
 
         // Checa los Argumentos
         if (args.length < 0) {
@@ -76,7 +78,6 @@ public class Puzzle {
             String[] aux = lineasArchivo.get(i).split(",");
 
             int j = 0;
-            // se rellena cada columna
             for (String value : aux) {
                 tableroFinal[k][j] = Integer.parseInt(value);
                 j++;

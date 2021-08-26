@@ -13,6 +13,10 @@ public class Puzzle {
     public static int tableroFinal[][]; // Estado Final
     public static int estadoActual[][];
 
+    /**
+     * Funcion hillCliming
+     * @return
+     */
     private List<String> hillCliming(){
         int pesoEstadoActual = 100;
         int pesoEstadoSucesor = 0;
@@ -57,6 +61,14 @@ public class Puzzle {
         return null;
     }
 
+    /**
+     * Funcion generaSucesores
+     * Permite dado un nodo inicial,optener todos los suceroes
+     * o movimientos posibles
+     * retorna una lista de sucesores
+     * @param nodo
+     * @return
+     */
     private List<Sucesor> generaSucesores(int nodo[][]){
         List<Sucesor> sucesores = new ArrayList<Sucesor>();
         String[] opera;
@@ -105,12 +117,32 @@ public class Puzzle {
         }
 
         for (String movimiento : opera) {
-            sucesores.add(aplicaMovimiento(nodo,movimiento));
+            try {
+                sucesores.add(aplicaMovimiento(nodo,movimiento));
+            } catch (ArrayIndexOutOfBoundsException  e) {
+                System.out.println("[!] Error de Indice Saliendo");
+                System.exit(1);
+            }
+            
         }
         return sucesores;
     }
 
-    private Sucesor aplicaMovimiento(int nodo[][], String movimiento){
+    /**
+     * Funcion aplicaMovimiento
+     * Permite dado una matris y un movimiento 
+     * "u","r","d","l"
+     * up
+     * rigth
+     * down
+     * lefth
+     * Esta funcion no se pregunta si se puede realizar o no el moivmiento
+     * 
+     * @param nodo
+     * @param movimiento
+     * @return
+     */
+    private Sucesor aplicaMovimiento(int nodo[][], String movimiento)throws ArrayIndexOutOfBoundsException {
         int[][] nuevo = new int[nodo.length][nodo.length];
         for (int i = 0; i < nodo.length; i++) { // X
             for (int j = 0; j < nodo.length; j++) { // Y
@@ -148,9 +180,15 @@ public class Puzzle {
                 nuevo[x][y+1] = aux;
             break;
         }
-        return new Sucesor(nuevo, movimiento);
+        return new Sucesor(nodo,nuevo, movimiento);
     }
 
+    /**
+     * Funcion localizaCero
+     * Permite dado una matriz loicalizar la ficha 0
+     * @param nodo
+     * @return
+     */
     private int[] localizaCero(int nodo[][]){
         int [] coordenada = new int[2];
         for (int i = 0; i < nodo.length; i++) { // X
@@ -173,11 +211,20 @@ public class Puzzle {
     private int gPiezasFueraLugar(int nodo[][]){
         int g = 0;
         for(int i = 0; i<nodo.length; i++){
-            for(int j =0; j<nodo.lenfth; j++)
-                
-            g++;
+            for(int j =0; j<nodo.length; j++){
+                if(nodo[i][j] != tableroFinal[i][j]){
+                    g++; 
+                }
+            }      
         }
         return g;
+    }
+
+    private int HPiezasColumnaFila(int nodo[][]){
+        int h = 0;
+
+        
+        return h;
     }
 
     private int funcionEval(int nodo[][]){

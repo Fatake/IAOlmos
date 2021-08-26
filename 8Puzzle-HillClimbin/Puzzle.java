@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.sound.sampled.LineEvent;
 
-
+/**
+ * Clase Puzzle
+ */
 public class Puzzle {
 
     /**
@@ -47,6 +48,11 @@ public class Puzzle {
         }
         return lineas;
     }
+
+    /**
+     * Main
+     * @param args
+     */
     public static void main(String[] args) {
         Puzzle p = new Puzzle();
         System.out.println("Programa que explora el 8puzzle con Hill Climbing");

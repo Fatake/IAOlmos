@@ -1,3 +1,5 @@
+package hillclimbing;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,9 +25,7 @@ public class Puzzle {
         // Paso 1 Seleccion el nodo n0
         int[][] estadoActual = new int[tableroInicial.length][tableroInicial.length];
         for (int i = 0; i < tableroInicial.length; i++) { // X
-            for (int j = 0; j < tableroInicial.length; j++) { // Y
-                estadoActual[i][j] = tableroInicial[i][j];
-            }
+            System.arraycopy(tableroInicial[i], 0, estadoActual[i], 0, tableroInicial.length); // Y
         }
 
         pesoEstadoActual = funcionEval(estadoActual);
@@ -33,8 +33,9 @@ public class Puzzle {
         // Busca la colina
         while (true) {
             // Paso 2 Generar los Sucesores
-            List<Sucesor> sucesores = new ArrayList<Sucesor>();
+            List<Sucesor> sucesores = new ArrayList<>();
             sucesores = generaSucesores(estadoActual);
+            System.out.println("Fin");
             System.exit(2);
             // optener f(ni) y comparar cual de estos es el 
             // peso mayor
@@ -69,7 +70,7 @@ public class Puzzle {
      * @return
      */
     private List<Sucesor> generaSucesores(int nodo[][]){
-        List<Sucesor> sucesores = new ArrayList<Sucesor>();
+        List<Sucesor> sucesores = new ArrayList<>();
         String[] opera;
 
         int[] ceroActual = localizaCero(nodo);
@@ -142,9 +143,7 @@ public class Puzzle {
     private Sucesor aplicaMovimiento(int nodo[][], String movimiento)throws ArrayIndexOutOfBoundsException {
         int[][] nuevo = new int[nodo.length][nodo.length];
         for (int i = 0; i < nodo.length; i++) { // X
-            for (int j = 0; j < nodo.length; j++) { // Y
-                nuevo[i][j] = nodo[i][j];
-            }
+            System.arraycopy(nodo[i], 0, nuevo[i], 0, nodo.length); // Y
         }
 
         int[] cero = localizaCero(nodo);
@@ -153,29 +152,33 @@ public class Puzzle {
         int aux = 0;
 
         switch (movimiento) {
-            case "u":// Arriba
+            case "u" -> {
+                // Arriba
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x-1][y];
                 nuevo[x-1][y] = aux;
-            break;
+            }
 
-            case "d":// Abajo
+            case "d" -> {
+                // Abajo
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x+1][y];
                 nuevo[x+1][y] = aux;
-            break;
+            }
         
-            case "l":// Izquierda
+            case "l" -> {
+                // Izquierda
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x][y-1];
                 nuevo[x][y-1] = aux;
-            break;
+            }
 
-            case "r":// Derecha
+            case "r" -> {
+                // Derecha
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x][y+1];
                 nuevo[x][y+1] = aux;
-            break;
+            }
         }
         return new Sucesor(nodo,nuevo, movimiento);
     }
@@ -272,7 +275,7 @@ public class Puzzle {
      */
     private List<String> lectorArchivo(String nombreArchivo) {
         File archivo = new File(nombreArchivo);
-        List<String> lineas = new ArrayList<String>();
+        List<String> lineas = new ArrayList<>();
 
         try {
             Scanner lector = new Scanner(archivo);
@@ -283,7 +286,6 @@ public class Puzzle {
             lector.close();
         } catch (FileNotFoundException e) {
             System.out.println("[!] Archivo No encontrado");
-            e.printStackTrace();
             System.exit(1);
         }
         return lineas;

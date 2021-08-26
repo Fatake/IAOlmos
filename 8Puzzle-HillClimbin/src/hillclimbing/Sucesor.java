@@ -1,3 +1,5 @@
+package hillclimbing;
+
 
 public class Sucesor {
     private int nodoPadre[][];

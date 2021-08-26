@@ -300,6 +300,7 @@ public class Puzzle {
         // Checa los Argumentos
         if (args.length < 0) {
             System.out.println("[!] No paso un archivo como argumento");
+            System.out.println("[i] Uso \n$ java bin file");
             System.exit(1);
         }
 

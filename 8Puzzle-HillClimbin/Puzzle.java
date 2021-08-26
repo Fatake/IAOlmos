@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 /**
  * Clase Puzzle
  */
@@ -109,11 +108,9 @@ public class Puzzle {
             // Arista Izquierda
             String[] operadores = {"u","r","d"};   
             opera = operadores; 
-            System.out.println("Entra aqui Arista Izquierda");
         }else{
             String[] operadores = {"u","r","d","l"};   
             opera = operadores; 
-            System.out.println("Entra aqui centro");
         }
 
         for (String movimiento : opera) {
@@ -220,7 +217,28 @@ public class Puzzle {
         return g;
     }
 
-    private int HPiezasColumnaFila(int nodo[][]){
+    private int H1PiezasColumnaFila(int nodo[][]){
+        int h = 0;
+
+        
+        return h;
+    }
+
+    private int H2PiezasColumnaFila(int nodo[][]){
+        int h = 0;
+
+        
+        return h;
+    }
+
+    private int H3PiezasColumnaFila(int nodo[][]){
+        int h = 0;
+
+        
+        return h;
+    }
+
+    private int H4PiezasColumnaFila(int nodo[][]){
         int h = 0;
 
         

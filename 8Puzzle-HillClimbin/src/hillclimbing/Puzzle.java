@@ -35,8 +35,6 @@ public class Puzzle {
             // Paso 2 Generar los Sucesores
             List<Sucesor> sucesores = new ArrayList<>();
             sucesores = generaSucesores(estadoActual);
-            System.out.println("Fin");
-            System.exit(2);
             // optener f(ni) y comparar cual de estos es el 
             // peso mayor
             int i = 0; // contador de sucesores
@@ -208,11 +206,11 @@ public class Puzzle {
      * Dado Un Int[][] regresa el numero de piezas fuera de su lugar
      * @param tablero
      */
-    private int gPiezasFueraLugar(int nodo[][]){
+    private int gPiezasDesdeInicio(int nodo[][]){
         int g = 0;
-        for(int i = 0; i<nodo.length; i++){
-            for(int j =0; j<nodo.length; j++){
-                if(nodo[i][j] != tableroFinal[i][j]){
+        for(int i = 0; i < nodo.length; i++){
+            for(int j = 0; j < nodo.length; j++){
+                if(nodo[i][j] != tableroInicial[i][j]){
                     g++; 
                 }
             }      
@@ -220,28 +218,45 @@ public class Puzzle {
         return g;
     }
 
-    private int H1PiezasColumnaFila(int nodo[][]){
+    /**
+     * Funcion que calcula la distancia de manhattan
+     * entre nodo actual y tablero final
+     * @param nodo
+     * @return
+     */
+    private int h1DistanciaManhattan(int nodo[][]){
+        int[] n = localizaCero(nodo);
+        int[] tf = localizaCero(tableroFinal);
+        return Math.abs(n[0]-tf[0]) + Math.abs(n[1]-tf[1]);
+    }
+
+    /**
+     * Piezas Faltantes
+     * Calcula cuantas piezas son diferentes desde
+     * el nodo actual hasta el tablero final
+     * @param nodo
+     * @return
+     */
+    private int h2PiezasFaltantesFinal(int nodo[][]){
+        int h = 0;
+        for(int i = 0; i < nodo.length; i++){
+            for(int j = 0; j < nodo.length; j++){
+                if(nodo[i][j] != tableroFinal[i][j]){
+                    h++; 
+                }
+            }      
+        }
+        return h;
+    }
+
+    private int h3PiezasColumnaFila(int nodo[][]){
         int h = 0;
 
         
         return h;
     }
 
-    private int H2PiezasColumnaFila(int nodo[][]){
-        int h = 0;
-
-        
-        return h;
-    }
-
-    private int H3PiezasColumnaFila(int nodo[][]){
-        int h = 0;
-
-        
-        return h;
-    }
-
-    private int H4PiezasColumnaFila(int nodo[][]){
+    private int h4PiezasColumnaFila(int nodo[][]){
         int h = 0;
 
         
@@ -249,8 +264,9 @@ public class Puzzle {
     }
 
     private int funcionEval(int nodo[][]){
-        
-        return 0;
+        return gPiezasDesdeInicio(nodo)+h1DistanciaManhattan(nodo)+
+                h2PiezasFaltantesFinal(nodo)+h3PiezasColumnaFila(nodo)+
+                h4PiezasColumnaFila(nodo);
     }
 
     /**

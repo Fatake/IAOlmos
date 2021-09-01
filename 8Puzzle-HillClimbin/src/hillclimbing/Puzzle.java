@@ -13,6 +13,7 @@ public class Puzzle {
     public static int tableroInicial[][]; // Estado Inicial
     public static int tableroFinal[][]; // Estado Final
     public static int estadoActual[][];
+    public static int gContador = 0;
 
     /**
      * Funcion hillCliming
@@ -50,6 +51,7 @@ public class Puzzle {
 
             // Paso 3 pesoEstadoActual < pesoEstadoSucesor
             if (pesoEstadoActual < pesoEstadoSucesor) {
+                gContador ++;
                 estadoActual = sucesores.get(selec).Nodo();
                 System.out.println(sucesores.get(selec).Movimiento());
             }else{
@@ -201,22 +203,6 @@ public class Puzzle {
         return null;
     }
 
-    /**
-     * Funcion g
-     * Dado Un Int[][] regresa el numero de piezas fuera de su lugar
-     * @param tablero
-     */
-    private int gPiezasDesdeInicio(int nodo[][]){
-        int g = 0;
-        for(int i = 0; i < nodo.length; i++){
-            for(int j = 0; j < nodo.length; j++){
-                if(nodo[i][j] != tableroInicial[i][j]){
-                    g++; 
-                }
-            }      
-        }
-        return g;
-    }
 
     /**
      * Funcion que calcula la distancia de manhattan
@@ -249,23 +235,41 @@ public class Puzzle {
         return h;
     }
 
-    private int h3PiezasColumnaFila(int nodo[][]){
-        int h = 0;
-
-        
-        return h;
+    /**
+     * 
+     */
+    private int h3PiezasFaltantesInicial(int nodo[][]){
+        int g = 0;
+        for(int i = 0; i < nodo.length; i++){
+            for(int j = 0; j < nodo.length; j++){
+                if(nodo[i][j] != tableroInicial[i][j]){
+                    g++; 
+                }
+            }      
+        }
+        return g;
     }
 
     private int h4PiezasColumnaFila(int nodo[][]){
-        int h = 0;
+        int f = 0; // Fichas diferentes solo en filas
+        int c = 0; // Fichas diferentes solo en columnas
 
+        for(int i = 0; i < nodo.length; i++){ // Columnas
+          
+            for(int j = 0; j < nodo.length; j++){ // Filas
+                if(nodo[i][j] != tableroInicial[i][j]){
+                    
+                }
+            }      
+        }
         
-        return h;
+        return (f + c);
     }
 
     private int funcionEval(int nodo[][]){
-        return gPiezasDesdeInicio(nodo)+h1DistanciaManhattan(nodo)+
-                h2PiezasFaltantesFinal(nodo)+h3PiezasColumnaFila(nodo)+
+        return gContador + h1DistanciaManhattan(nodo) +
+                h2PiezasFaltantesFinal(nodo) +
+                h3PiezasFaltantesInicial(nodo) +
                 h4PiezasColumnaFila(nodo);
     }
 

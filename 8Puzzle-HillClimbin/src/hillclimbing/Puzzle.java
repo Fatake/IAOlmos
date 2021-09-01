@@ -253,21 +253,24 @@ public class Puzzle {
     private int h4PiezasColumnaFila(int nodo[][]){
         int f = 0; // Fichas diferentes solo en filas
         int c = 0; // Fichas diferentes solo en columnas
-
-        for(int i = 0; i < nodo.length; i++){ // Columnas
-          
-            for(int j = 0; j < nodo.length; j++){ // Filas
-                if(nodo[i][j] != tableroInicial[i][j]){
-                    
-                }
-            }      
-        }
         
+        for(int i = 0; i < nodo.length; i++){ 
+            for(int j = 0; j < nodo.length; j++){ 
+                for(int k = 0; k < tableroFinal.length; k++){
+                    if(nodo[i][j] == tableroFinal[i][k]){
+                        f++;
+                    }
+                    if(nodo[j][i] == tableroFinal[k][i]){
+                        c++;
+                    }
+                }
+            }
+        } 
         return (f + c);
     }
 
     private int funcionEval(int nodo[][]){
-        return gContador + h1DistanciaManhattan(nodo) +
+        return  gContador + h1DistanciaManhattan(nodo) +
                 h2PiezasFaltantesFinal(nodo) +
                 h3PiezasFaltantesInicial(nodo) +
                 h4PiezasColumnaFila(nodo);

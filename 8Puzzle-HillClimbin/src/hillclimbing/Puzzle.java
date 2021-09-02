@@ -25,7 +25,7 @@ public class Puzzle {
 
         // Paso 1 Seleccion el nodo n0
         int[][] estadoActual = new int[tableroInicial.length][tableroInicial.length];
-        for (int i = 0; i < tableroInicial.length; i++) { // X
+        for (int i = 0; i < tableroInicial.length; i++) {
             System.arraycopy(tableroInicial[i], 0, estadoActual[i], 0, tableroInicial.length); // Y
         }
 
@@ -44,25 +44,27 @@ public class Puzzle {
 
             while ( i < sucesores.size()) {
                 Sucesor hijo = sucesores.get(i);
-                //printTablero(hijo.Nodo());
-                // System.out.println("Anterior: "+movimiento+" Nuevo: "+hijo.Movimiento());
-                // evalua al Hijo
+
                 float pesoAux = funcionEval(hijo);
                 if (pesoAux > pesoEstadoSucesor) {
                     if (movimiento.equals("u")) {
                         if (hijo.Movimiento().equals("d") ) {
+                            i++;
                             continue;
                         }
                     }else if (movimiento.equals("d")) {
                         if (hijo.Movimiento().equals("u") ) {
+                            i++;
                             continue;
                         }
                     }else if (movimiento.equals("r")) {
                         if (hijo.Movimiento().equals("l") ) {
+                            i++;
                             continue;
                         }
                     }else if (movimiento.equals("l")) {
                         if (hijo.Movimiento().equals("r") ) {
+                            i++;
                             continue;
                         }
                     }
@@ -73,20 +75,20 @@ public class Puzzle {
                 i++;
             }
 
-
             if (!seleccion) {
                 System.out.println("\nLlegue a un Maximo");
                 break;
             }
 
             // Paso 3 pesoEstadoActual < pesoEstadoSucesor
-            if (pesoEstadoActual < pesoEstadoSucesor) {
+            if (pesoEstadoActual <= pesoEstadoSucesor) {
                 gContador ++; // Incrementa el contador de jugadas
                 // toma el movimiento
                 movimiento = sucesores.get(selec).Movimiento();
                 // toma el tablero
                 estadoActual = sucesores.get(selec).Nodo();
-                // printTablero(estadoActual);
+                //printTablero(estadoActual);
+
                 System.out.print(movimiento+",");
             }else{
                 break;
@@ -237,6 +239,28 @@ public class Puzzle {
         return null;
     }
 
+    /**
+     * Funcion Localiza Un numero y retorna
+     * un Arreglo con las coordenadas
+     * a[0] = x
+     * a[1] = y
+     * @param nodo
+     * @param numero
+     * @return
+     */
+    private int[] localizaNumero(int nodo[][],int numero){
+        int [] coordenada = new int[2];
+        for (int i = 0; i < nodo.length; i++) { // X
+            for (int j = 0; j < nodo.length; j++) { // Y
+                if (nodo[i][j] == numero) {
+                    coordenada[0] = i;
+                    coordenada[1] = j;
+                    return coordenada;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Funcion que calcula la distancia de manhattan
@@ -246,14 +270,12 @@ public class Puzzle {
      */
     private int h1DistanciaManhattan(int nodo[][]){
         int h = 0;
-        
-        for (int i = 0; i < nodo.length; i++) {
-            for (int j = 0; j < nodo.length; j++) {
-                    
-                h += Math.abs(n[0]-tf[0]) + Math.abs(n[1]-tf[1]);
-            }
+        int size = tableroFinal.length*tableroFinal.length;
+        for (int i = 0; i < size ;i++) {
+            int[] n = localizaNumero(nodo,i);
+            int[] tf = localizaNumero(tableroFinal,i);
+            h += Math.abs(n[0]-tf[0]) + Math.abs(n[1]-tf[1]);
         }
-        
         return h;
     }
 

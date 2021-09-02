@@ -20,8 +20,8 @@ public class Puzzle {
      * @return
      */
     private List<String> hillCliming(){
-        int pesoEstadoActual = 100;
-        int pesoEstadoSucesor = 0;
+        float pesoEstadoActual = 100;
+        float pesoEstadoSucesor = 0;
 
         // Paso 1 Seleccion el nodo n0
         int[][] estadoActual = new int[tableroInicial.length][tableroInicial.length];
@@ -29,8 +29,8 @@ public class Puzzle {
             System.arraycopy(tableroInicial[i], 0, estadoActual[i], 0, tableroInicial.length); // Y
         }
 
-        pesoEstadoActual = funcionEval(estadoActual);
-
+        pesoEstadoActual = funcionEval(new Sucesor(null, estadoActual, "", 0));
+        String movimiento = "";
         // Busca la colina
         while (true) {
             // Paso 2 Generar los Sucesores
@@ -38,22 +38,56 @@ public class Puzzle {
             sucesores = generaSucesores(estadoActual);
             // optener f(ni) y comparar cual de estos es el 
             // peso mayor
-            int i = 0; // contador de sucesores
+            boolean seleccion = false;
             int selec = 0; // index del sucesor con mayor peso
-            for (Sucesor is : sucesores) {
-                int pesoAux = funcionEval(is.Nodo());
+            int i = 0;
+
+            while ( i < sucesores.size()) {
+                Sucesor hijo = sucesores.get(i);
+                //printTablero(hijo.Nodo());
+                // System.out.println("Anterior: "+movimiento+" Nuevo: "+hijo.Movimiento());
+                // evalua al Hijo
+                float pesoAux = funcionEval(hijo);
                 if (pesoAux > pesoEstadoSucesor) {
+                    if (movimiento.equals("u")) {
+                        if (hijo.Movimiento().equals("d") ) {
+                            continue;
+                        }
+                    }else if (movimiento.equals("d")) {
+                        if (hijo.Movimiento().equals("u") ) {
+                            continue;
+                        }
+                    }else if (movimiento.equals("r")) {
+                        if (hijo.Movimiento().equals("l") ) {
+                            continue;
+                        }
+                    }else if (movimiento.equals("l")) {
+                        if (hijo.Movimiento().equals("r") ) {
+                            continue;
+                        }
+                    }
+                    seleccion = true;
                     pesoEstadoSucesor = pesoAux;
                     selec = i;
                 }
                 i++;
             }
 
+
+            if (!seleccion) {
+                System.out.println("\nLlegue a un Maximo");
+                break;
+            }
+
             // Paso 3 pesoEstadoActual < pesoEstadoSucesor
             if (pesoEstadoActual < pesoEstadoSucesor) {
-                gContador ++;
+                gContador ++; // Incrementa el contador de jugadas
+                // toma el movimiento
+                movimiento = sucesores.get(selec).Movimiento();
+                // toma el tablero
                 estadoActual = sucesores.get(selec).Nodo();
-                System.out.println(sucesores.get(selec).Movimiento());
+                // printTablero(estadoActual);
+                System.out.print(movimiento+",");
             }else{
                 break;
             }
@@ -180,7 +214,7 @@ public class Puzzle {
                 nuevo[x][y+1] = aux;
             }
         }
-        return new Sucesor(nodo,nuevo, movimiento);
+        return new Sucesor(nodo,nuevo, movimiento,gContador+1);
     }
 
     /**
@@ -211,9 +245,16 @@ public class Puzzle {
      * @return
      */
     private int h1DistanciaManhattan(int nodo[][]){
-        int[] n = localizaCero(nodo);
-        int[] tf = localizaCero(tableroFinal);
-        return Math.abs(n[0]-tf[0]) + Math.abs(n[1]-tf[1]);
+        int h = 0;
+        
+        for (int i = 0; i < nodo.length; i++) {
+            for (int j = 0; j < nodo.length; j++) {
+                    
+                h += Math.abs(n[0]-tf[0]) + Math.abs(n[1]-tf[1]);
+            }
+        }
+        
+        return h;
     }
 
     /**
@@ -269,11 +310,14 @@ public class Puzzle {
         return (f + c);
     }
 
-    private int funcionEval(int nodo[][]){
-        return  gContador + h1DistanciaManhattan(nodo) +
-                h2PiezasFaltantesFinal(nodo) +
-                h3PiezasFaltantesInicial(nodo) +
-                h4PiezasColumnaFila(nodo);
+    private float funcionEval(Sucesor evalua){
+        int [][] nodo = evalua.Nodo();
+        float respuesta = evalua.nMovimientos() + 
+        h1DistanciaManhattan(nodo) +
+        h2PiezasFaltantesFinal(nodo) +
+        h3PiezasFaltantesInicial(nodo) +
+        h4PiezasColumnaFila(nodo);
+        return  respuesta;
     }
 
     /**
@@ -288,6 +332,7 @@ public class Puzzle {
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     /**

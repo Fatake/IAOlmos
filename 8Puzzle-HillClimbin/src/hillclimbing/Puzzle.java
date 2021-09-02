@@ -44,7 +44,7 @@ public class Puzzle {
 
             while ( i < sucesores.size()) {
                 Sucesor hijo = sucesores.get(i);
-
+                //printTablero(hijo.Nodo());
                 float pesoAux = funcionEval(hijo);
                 if (pesoAux > pesoEstadoSucesor) {
                     if (movimiento.equals("u")) {
@@ -88,7 +88,6 @@ public class Puzzle {
                 // toma el tablero
                 estadoActual = sucesores.get(selec).Nodo();
                 //printTablero(estadoActual);
-
                 System.out.print(movimiento+",");
             }else{
                 break;
@@ -290,7 +289,7 @@ public class Puzzle {
         int h = 0;
         for(int i = 0; i < nodo.length; i++){
             for(int j = 0; j < nodo.length; j++){
-                if(nodo[i][j] != tableroFinal[i][j]){
+                if(nodo[i][j] == tableroFinal[i][j]){
                     h++; 
                 }
             }      
@@ -314,8 +313,8 @@ public class Puzzle {
     }
 
     private int h4PiezasColumnaFila(int nodo[][]){
-        int f = 0; // Fichas diferentes solo en filas
-        int c = 0; // Fichas diferentes solo en columnas
+        int f = 0; // Fichas iguales solo en filas
+        int c = 0; // Fichas iguales solo en columnas
         
         for(int i = 0; i < nodo.length; i++){ 
             for(int j = 0; j < nodo.length; j++){ 

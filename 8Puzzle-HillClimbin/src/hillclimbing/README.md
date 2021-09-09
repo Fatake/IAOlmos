@@ -10,6 +10,8 @@ Este programa fue compilado en java `jdk-16.0.2`
 
 Compilar
 
+./exec.sh
+
 ```bash
 javac *.java
 ```
@@ -29,14 +31,12 @@ $ ./ejecuta.sh
 
 ---
 
-
-
 ### Formato del Archivo Input
 
 Este archivo sirve como descripto de el tamaño de puzzle (tamaño del tablero o matriz) y tambien da el estado Inicial y el estado final
 
 ```
-int tamMatriz # Entero que indica el alto y anchod e una matriz
+int tamMatriz # Entero que indica el alto y ancho de una matriz
 int,int,...,int # rellenado del Estado Inicial de tamMatriz * tamMatriz
 .
 .

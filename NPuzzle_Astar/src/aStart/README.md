@@ -1,6 +1,6 @@
-# 8 Puzzle con Algoritmo A*
+# N Puzzle con Algoritmo A*
 
-En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del problema 8 puzzle con el algoritmo de A*
+En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del problema N puzzle con el algoritmo de A*
 
 ---
 

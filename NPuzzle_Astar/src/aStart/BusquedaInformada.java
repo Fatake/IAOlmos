@@ -22,9 +22,12 @@ public class BusquedaInformada {
      * Funcion hillCliming
      * @return
      */
-    public List<String> hillCliming(){
+    public List<String> aStar(){
         float pesoEstadoActual = 0;
         float pesoEstadoSucesor = 0;
+        List<Sucesor> sucesores = new ArrayList<>();
+        List<String> movimientos = new ArrayList<>();
+        String movimiento = "";
 
         // Paso 1 Seleccion el nodo n0
         int[][] estadoActual = new int[tableroInicial.length][tableroInicial.length];
@@ -33,74 +36,9 @@ public class BusquedaInformada {
         }
 
         pesoEstadoActual = funcionEval(new Sucesor(null, estadoActual, "", 0));
-        String movimiento = "";
-        // Busca la colina
-        while (true) {
-            // Paso 2 Generar los Sucesores
-            List<Sucesor> sucesores = new ArrayList<>();
-            sucesores = generaSucesores(estadoActual);
-            // optener f(ni) y comparar cual de estos es el 
-            // peso mayor
-            boolean seleccion = false;
-            int selec = 0; // index del sucesor con mayor peso
-            int i = 0;
-
-            while ( i < sucesores.size()) {
-                Sucesor hijo = sucesores.get(i);
-                float pesoAux = funcionEval(hijo);
-                if (pesoAux > pesoEstadoSucesor) {
-                    switch (movimiento) {
-                        case "u" -> {
-                            if (hijo.Movimiento().equals("d") ) {
-                                i++;
-                                continue;
-                            }
-                        }
-                        case "d" -> {
-                            if (hijo.Movimiento().equals("u") ) {
-                                i++;
-                                continue;
-                            }
-                        }
-                        case "r" -> {
-                            if (hijo.Movimiento().equals("l") ) {
-                                i++;
-                                continue;
-                            }
-                        }
-                        case "l" -> {
-                            if (hijo.Movimiento().equals("r") ) {
-                                i++;
-                                continue;
-                            }
-                        }
-                    }
-                    seleccion = true;
-                    pesoEstadoSucesor = pesoAux;
-                    selec = i;
-                }
-                i++;
-            }
-
-            if (!seleccion) {
-                System.out.println("\nLlegue a un Maximo");
-                //printTablero(estadoActual);
-                break;
-            }
-
-            // Paso 3 pesoEstadoActual < pesoEstadoSucesor
-            if (pesoEstadoActual <= pesoEstadoSucesor) {
-                gContador ++; // Incrementa el contador de jugadas
-                // toma el movimiento
-                movimiento = sucesores.get(selec).Movimiento();
-                // toma el tablero
-                estadoActual = sucesores.get(selec).Nodo();
-                System.out.print(movimiento+",");
-            }else{
-                break;
-            }
-        }
-        return null;
+        sucesores = generaSucesores(estadoActual);
+        
+        return movimientos;
     }
 
     /**
@@ -326,7 +264,8 @@ public class BusquedaInformada {
     }
 
     /**
-     * h5
+     * Funcionde evaluacion
+     * Requiere de un Nodo Sucesor
      * @param evalua
      * @return
      */

@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Clase Puzzle
+ * Clase Main
  */
-public class Puzzle {
+public class Main {
     
     /**
      * Funcion lectorArchivo
-     * Lee un archivo y regresa una lista las lINEAS LEIDAS
+     * Lee un archivo y regresa una lista las lineas Leidas
      * @param nombreArchivo
      * @return
      */
@@ -41,7 +41,7 @@ public class Puzzle {
      */
     public static void main(String[] args) {
         BusquedaInformada p ;
-        System.out.println("Programa que explora el 8puzzle con A*");
+        System.out.println("Programa que explora el Npuzzle con A*");
 
         // Checa los Argumentos
         if (args.length < 0) {
@@ -88,6 +88,6 @@ public class Puzzle {
         p.printTablero(tableroFinal);
 
         // Lanza el algoritmo
-        p.hillCliming();
+        p.aStar();
     }
 }

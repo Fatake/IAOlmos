@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import argparse
+from shutil import rmtree
 
 
 def _argumentos():
@@ -21,6 +22,7 @@ def _argumentos():
     return args
 
 def generaArchivo(sizeTablero, numeroElementos, prefijo):
+    rmtree("generador")
 
     if not os.path.exists("./generador/"):
         os.makedirs("generador")
@@ -32,8 +34,9 @@ def generaArchivo(sizeTablero, numeroElementos, prefijo):
     for filename in nombresArchivos:
         with open("generador/"+filename,"x") as file:
             file.write(str(sizeTablero))
-            tableroFinal = np.arange(sizeTablero*sizeTablero)
-            tableroInicial =  np.random.choice(range(9), 9, replace=False)
+            largo = sizeTablero*sizeTablero
+            tableroFinal = np.arange(largo)
+            tableroInicial =  np.random.choice(range(largo), largo, replace=False)
             
             c = 0
             for j in range(0,sizeTablero*sizeTablero):

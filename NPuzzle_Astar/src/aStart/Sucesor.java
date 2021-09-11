@@ -9,7 +9,7 @@ public class Sucesor {
     private int pesoh2 = 0;
     private int pesoh3 = 0;
     private int pesoh4 = 0;
-    private int valorF = 0;
+    private float valorF = 0;
 
     public Sucesor(int nodo[][], String movimiento ){
         this.nodoPadre = null;
@@ -32,7 +32,7 @@ public class Sucesor {
                     int pesoh2,
                     int pesoh3,
                     int pesoh4,
-                    int valorF ){
+                    Float valorF ){
         this.nodoPadre = nodoPadre;
         this.nodo = nodo;
         this.movimiento = movimiento;
@@ -76,7 +76,7 @@ public class Sucesor {
         return this.pesoh4;
     }
 
-    public int getValorF(){
+    public float getValorF(){
         return this.valorF;
     }
 
@@ -100,7 +100,7 @@ public class Sucesor {
         this.pesoh4 = n;
     }
 
-    public void setValorF(int n){
+    public void setValorF(float n){
         this.valorF = n;
     }
 }

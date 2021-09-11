@@ -23,20 +23,30 @@ public class BusquedaInformada {
      * @return
      */
     public List<String> aStar(){
-        float pesoEstadoActual = 0;
-        float pesoEstadoSucesor = 0;
         List<Sucesor> sucesores = new ArrayList<>();
         List<String> movimientos = new ArrayList<>();
-        String movimiento = "";
+        List<Sucesor> open = new ArrayList<>();
+        List<Sucesor> close = new ArrayList<>();
+        List<Sucesor> neighbour = new ArrayList<>();
 
-        // Paso 1 Seleccion el nodo n0
+
+        // Paso 1 Seleccion el nodo Inicial
         int[][] estadoActual = new int[tableroInicial.length][tableroInicial.length];
         for (int i = 0; i < tableroInicial.length; i++) {
             System.arraycopy(tableroInicial[i], 0, estadoActual[i], 0, tableroInicial.length); // Y
         }
+        Sucesor nodoactual = new Sucesor(null, estadoActual, "", 0);
+        nodoactual.setValorF(funcionEval(nodoactual));
 
-        pesoEstadoActual = funcionEval(new Sucesor(null, estadoActual, "", 0));
-        sucesores = generaSucesores(estadoActual);
+        // Aregar NODO Inicial a la lista cerrada con g = 0;
+        close.add(nodoactual);
+        
+        // Inicia A*
+        // Mientras el NodoFinal no se encuentre en la lista Cerrada
+        while (true) {
+            break;
+        }
+        // sucesores = generaSucesores(nodoactual.Nodo());
         
         return movimientos;
     }

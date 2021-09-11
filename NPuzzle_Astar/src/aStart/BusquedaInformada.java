@@ -271,7 +271,7 @@ public class BusquedaInformada {
      */
     private float funcionEval(Sucesor evalua){
         int [][] nodo = evalua.Nodo();
-        return  evalua.nMovimientos() + 
+        return  evalua.gnMovimientos() + 
             h1DistanciaManhattan(nodo) +
             h2PiezasFaltantesFinal(nodo) +
             h3PiezasFaltantesInicial(nodo) +

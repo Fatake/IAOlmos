@@ -46,6 +46,42 @@ public class BusquedaInformada {
         while (true) {
             break;
         }
+        /**
+        Mientras nodo final no se encuentre en la lista cerrada
+            Nodo actual = último elemento agregado a la lista cerrada
+            Agregar los nodos vecinos del nodo actual en la lista vecinos excepto nodos que
+            estén en la lista cerrada
+            Para todo nodo de la lista vecinos calcular los atributos:
+                g = g del nodo actual + costo del nodo vecino al nodo actual
+                h = costo (directo) aproximado desde el nodo vecino al nodo final
+                f = g + h
+                p = nodo actual
+            fin para
+
+            Para cada nodo de la lista vecinos
+                Si el nodo vecino no se encuentra en la lista abierta ni en la lista cerrada
+                    Copiar nodo vecino en la lista abierta
+                Fin si
+                else{
+                    Si nodo vecino ya se encuentra en la lista abierta
+                        Si g del nodo vecino < al g del mismo nodo de la lista abierta
+                            Actualizar atributos del nodo de la lista abierta con atributos del mismo nodo
+                            de la lista vecinos
+                        Fin si
+                    Fin si
+                }
+            Fin para
+
+            Vaciar nodos de la lista vecinos
+            Elegir nodo con menor f de la lista abierta y moverlo a la lista cerrada (si existe
+            empate, el primero de la lista)
+        Fin mientras (volver a mientras)
+        
+        Crear lista ruta corta
+        Lista ruta corta = Invertir (Leer nodo final y trazar ruta por medio de los nodos padres
+        (p) hasta llegar a nodo inicio)
+        Retornar lista ruta corta
+         */
         // sucesores = generaSucesores(nodoactual.Nodo());
         
         return movimientos;

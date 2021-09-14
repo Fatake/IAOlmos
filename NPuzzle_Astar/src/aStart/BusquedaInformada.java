@@ -121,15 +121,13 @@ public class BusquedaInformada {
         return movimientos;
     }
 
-    private Sucesor regresaElementoLista(LinkedList<Sucesor> cola, int[][] tablero){
-        for (Sucesor nodo : cola) {
-            if (igual(nodo.Tablero(), tablero)) {
-                return nodo;
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Funcion que retorna si un tablero matriz
+     * se encuentra en la lista
+     * @param cola
+     * @param tablero
+     * @return
+     */
     private boolean estaElementoLista(LinkedList<Sucesor> cola, int[][] tablero){
         if (cola.stream().anyMatch(nodo -> (igual(nodo.Tablero(), tablero)))) {
             return true;

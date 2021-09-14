@@ -8,21 +8,15 @@ En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del 
 
 Este programa fue compilado en java `jdk-16.0.2`
 
-Compilar
 
-./exec.sh
-
-```bash
-javac *.java
-```
-
-Ejecutar con Archivo Inicial
+#### Compilar y ejecutar Manual
 
 ```bash
-java bin inputFile
+$ javac aStart/Main.java
+$ java aStart.Main entrada.ini
 ```
 
-Con script
+#### Compilar y Ejecutar en Script
 
 ```bash
 $ chmod 754 ejecuta.sh

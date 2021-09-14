@@ -8,21 +8,14 @@ En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del 
 
 Este programa fue compilado en java `jdk-16.0.2`
 
-Compilar
-
-./exec.sh
+#### Compilar y Ejecutar de forma Manual
 
 ```bash
-javac *.java
+$ javac hillclimbing/Puzzle.java
+$ java hillclimbing.Puzzle entrada.ini
 ```
 
-Ejecutar con Archivo Inicial
-
-```bash
-java bin inputFile
-```
-
-Con script
+#### Compila y Ejecuta con bash Script
 
 ```bash
 $ chmod 754 ejecuta.sh

@@ -1,6 +1,7 @@
 package aStart;
 
-
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,58 +24,80 @@ public class BusquedaInformada {
      * @return
      */
     public List<String> aStar(){
-        List<Sucesor> sucesores = new ArrayList<>();
+        // Lista de movimientos
         List<String> movimientos = new ArrayList<>();
-        List<Sucesor> open = new ArrayList<>();
-        List<Sucesor> close = new ArrayList<>();
-        List<Sucesor> neighbour = new ArrayList<>();
+        List<Sucesor> sucesores = new ArrayList<>();
 
+        if (igual(tableroInicial, tableroFinal)) {
+            System.out.println("[i] Tablero Inicial es igual al final");
+            return null;
+        }
+
+        LinkedList<Sucesor> open = new LinkedList<Sucesor>();
+        LinkedList<Sucesor> close = new LinkedList<Sucesor>();
+        LinkedList<Sucesor> neighbors = new LinkedList<Sucesor>();
 
         // Paso 1 Seleccion el nodo Inicial
-        int[][] estadoActual = new int[tableroInicial.length][tableroInicial.length];
-        for (int i = 0; i < tableroInicial.length; i++) {
-            System.arraycopy(tableroInicial[i], 0, estadoActual[i], 0, tableroInicial.length); // Y
-        }
-        Sucesor nodoactual = new Sucesor(null, estadoActual, "", 0);
-        nodoactual.setValorF(funcionEval(nodoactual));
+        Sucesor nodoActual = new Sucesor(null, tableroInicial, "", 0);
+        nodoActual.setValorF(funcionEval(nodoActual));
+        nodoActual.setPesoHs(funcionesHs(nodoActual));
 
         // Aregar NODO Inicial a la lista cerrada con g = 0;
-        close.add(nodoactual);
+        close.add(nodoActual);
         
         // Inicia A*
         // Mientras el NodoFinal no se encuentre en la lista Cerrada
-        while (true) {
-            break;
-        }
-        /**
-        Mientras nodo final no se encuentre en la lista cerrada
-            Nodo actual = último elemento agregado a la lista cerrada
-            Agregar los nodos vecinos del nodo actual en la lista vecinos excepto nodos que
-            estén en la lista cerrada
-            Para todo nodo de la lista vecinos calcular los atributos:
-                g = g del nodo actual + costo del nodo vecino al nodo actual
-                h = costo (directo) aproximado desde el nodo vecino al nodo final
-                f = g + h
-                p = nodo actual
-            fin para
+        while (!estaElementoLista(close,tableroFinal)) {
+            // último elemento agregado a la lista cerrada
+            nodoActual = close.pollLast();
+            // Genera los vecinos del nodo actual
+            sucesores = generaSucesores(nodoActual.Tablero());
 
-            Para cada nodo de la lista vecinos
-                Si el nodo vecino no se encuentra en la lista abierta ni en la lista cerrada
-                    Copiar nodo vecino en la lista abierta
-                Fin si
-                else{
-                    Si nodo vecino ya se encuentra en la lista abierta
-                        Si g del nodo vecino < al g del mismo nodo de la lista abierta
-                            Actualizar atributos del nodo de la lista abierta con atributos del mismo nodo
-                            de la lista vecinos
-                        Fin si
-                    Fin si
+            // Agregar los nodos vecinos del nodo actual en la 
+            // lista vecinos excepto nodos que estén en la lista cerrada
+            for (Sucesor nSucesor : sucesores) {
+                if (!estaElementoLista(close, nSucesor.Tablero()) ) {
+                    neighbors.add(nSucesor);
                 }
-            Fin para
+            }
 
-            Vaciar nodos de la lista vecinos
-            Elegir nodo con menor f de la lista abierta y moverlo a la lista cerrada (si existe
+            // Para todo vecino en la lista calcular
+            // g, h, f, padre
+            for (Sucesor sucesor : neighbors) {
+                sucesor.setGnMovimientos(gContador+1);
+                sucesor.setPesoHs(funcionesHs(sucesor));
+                sucesor.setValorF(funcionEval(sucesor));
+                sucesor.setPadre(nodoActual.Tablero());
+            }
+
+            for (Sucesor sucesor : neighbors) {
+                // Si el nodo vecino no se encuentra en la
+                //  lista abierta ni en la lista cerrada
+                if (!estaElementoLista(open, sucesor.Tablero()) && 
+                    !estaElementoLista(close, sucesor.Tablero())) {
+                    open.add(sucesor);
+                }else{
+                    if (estaElementoLista(open, sucesor.Tablero())) {
+                        Sucesor os = regresaElementoLista(open, sucesor.Tablero());
+                        if (sucesor.gnMovimientos() < os.gnMovimientos()) {
+                            sucesor = os;
+                            // Actualizar atributos del nodo de la lista
+                            // abierta con atributos del mismo nodo
+                            // de la lista vecinos
+                        }
+                    }
+                }
+            }
+
+            neighbors.clear();
+
+            /**
+             Elegir nodo con menor f de la lista abierta y
+             moverlo a la lista cerrada (si existe
             empate, el primero de la lista)
+             */
+        }
+        /**            
         Fin mientras (volver a mientras)
         
         Crear lista ruta corta
@@ -85,6 +108,35 @@ public class BusquedaInformada {
         // sucesores = generaSucesores(nodoactual.Nodo());
         
         return movimientos;
+    }
+
+    private Sucesor regresaElementoLista(LinkedList<Sucesor> cola, int[][] tablero){
+        for (Sucesor nodo : cola) {
+            if (igual(nodo.Tablero(), tablero)) {
+                return nodo;
+            }
+        }
+        return null;
+    }
+
+    private boolean estaElementoLista(LinkedList<Sucesor> cola, int[][] tablero){
+        for (Sucesor nodo : cola) {
+            if (igual(nodo.Tablero(), tablero)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean igual(int m1[][], int m2[][]){
+        for (int i = 0; i < m2.length; i++) {
+            for (int j = 0; j < m2.length; j++) {
+                if (m1[i][j] != m2[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -309,6 +361,15 @@ public class BusquedaInformada {
         return (f + c);
     }
 
+
+    private float funcionesHs(Sucesor evalua){
+        int [][] nodo = evalua.Tablero();
+        return  h1DistanciaManhattan(nodo) +
+            h2PiezasFaltantesFinal(nodo) +
+            h3PiezasFaltantesInicial(nodo) +
+            h4PiezasColumnaFila(nodo);
+    }
+
     /**
      * Funcionde evaluacion
      * Requiere de un Nodo Sucesor
@@ -316,7 +377,7 @@ public class BusquedaInformada {
      * @return
      */
     private float funcionEval(Sucesor evalua){
-        int [][] nodo = evalua.Nodo();
+        int [][] nodo = evalua.Tablero();
         return  evalua.gnMovimientos() + 
             h1DistanciaManhattan(nodo) +
             h2PiezasFaltantesFinal(nodo) +

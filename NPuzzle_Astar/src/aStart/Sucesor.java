@@ -25,26 +25,6 @@ public class Sucesor {
         this.gnMovimientos = gnMovimientos;
     }
 
-    public Sucesor(int[][] nodoPadre,
-                    int tablero[][], 
-                    String movimiento, 
-                    int gnMovimientos,
-                    float pesoh1,
-                    float pesoh2,
-                    float pesoh3,
-                    float pesoh4,
-                    Float valorF ){
-        this.nodoPadre = nodoPadre;
-        this.tablero = tablero;
-        this.movimiento = movimiento;
-        this.gnMovimientos = gnMovimientos;
-        this.pesoh1 = pesoh1;
-        this.pesoh2 = pesoh2;
-        this.pesoh3 = pesoh3;
-        this.pesoh4 = pesoh4;
-        this.valorF = valorF;
-    }
-
     public int[][] getPadre(){
         return this.nodoPadre;
     }

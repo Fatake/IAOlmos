@@ -1,7 +1,6 @@
 package aStart;
 
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class BusquedaInformada {
     }
 
     /**
-     * Funcion hillCliming
+     * Funcion A*
      * @return
      */
     public List<String> aStar(){
@@ -51,7 +50,7 @@ public class BusquedaInformada {
             // último elemento agregado a la lista cerrada
             nodoActual = close.pollLast();
             // Genera los vecinos del nodo actual
-            sucesores = generaSucesores(nodoActual.Tablero());
+            sucesores = generaSucesores(nodoActual);
 
             // Agregar los nodos vecinos del nodo actual en la 
             // lista vecinos excepto nodos que estén en la lista cerrada
@@ -64,7 +63,6 @@ public class BusquedaInformada {
             // Para todo vecino en la lista calcular
             // g, h, f, padre
             for (Sucesor sucesor : neighbors) {
-                sucesor.setGnMovimientos(gContador+1);
                 sucesor.setPesoHs(funcionesHs(sucesor));
                 sucesor.setValorF(funcionEval(sucesor));
                 sucesor.setPadre(nodoActual.Tablero());
@@ -105,7 +103,6 @@ public class BusquedaInformada {
         (p) hasta llegar a nodo inicio)
         Retornar lista ruta corta
          */
-        // sucesores = generaSucesores(nodoactual.Nodo());
         
         return movimientos;
     }
@@ -147,7 +144,8 @@ public class BusquedaInformada {
      * @param nodo
      * @return
      */
-    private List<Sucesor> generaSucesores(int nodo[][]){
+    private List<Sucesor> generaSucesores(Sucesor padre){
+        int[][] nodo = padre.Tablero();
         List<Sucesor> sucesores = new ArrayList<>();
         String[] opera;
 
@@ -194,7 +192,7 @@ public class BusquedaInformada {
 
         for (String movimiento : opera) {
             try {
-                sucesores.add(aplicaMovimiento(nodo,movimiento));
+                sucesores.add(aplicaMovimiento(padre,movimiento));
             } catch (ArrayIndexOutOfBoundsException  e) {
                 System.out.println("[!] Error de Indice Saliendo");
                 System.exit(1);
@@ -218,7 +216,8 @@ public class BusquedaInformada {
      * @param movimiento
      * @return
      */
-    private Sucesor aplicaMovimiento(int nodo[][], String movimiento)throws ArrayIndexOutOfBoundsException {
+    private Sucesor aplicaMovimiento(Sucesor padre, String movimiento)throws ArrayIndexOutOfBoundsException {
+        int[][] nodo = padre.Tablero();
         int[][] nuevo = new int[nodo.length][nodo.length];
         for (int i = 0; i < nodo.length; i++) { // X
             System.arraycopy(nodo[i], 0, nuevo[i], 0, nodo.length); // Y
@@ -258,7 +257,7 @@ public class BusquedaInformada {
                 nuevo[x][y+1] = aux;
             }
         }
-        return new Sucesor(nodo,nuevo, movimiento,gContador+1);
+        return new Sucesor(nodo,nuevo, movimiento,padre.gnMovimientos()+1);
     }
 
     /**
@@ -285,6 +284,7 @@ public class BusquedaInformada {
     }
 
     /**
+     * Funcion Heurista 1
      * Funcion que calcula la distancia de manhattan
      * entre nodo actual y tablero final
      * @param nodo
@@ -302,6 +302,7 @@ public class BusquedaInformada {
     }
 
     /**
+     * Funcion Heurista 2
      * Piezas Faltantes
      * Calcula cuantas piezas son diferentes desde
      * el nodo actual hasta el tablero final
@@ -321,7 +322,10 @@ public class BusquedaInformada {
     }
 
     /**
-     * h3
+     * Funcion Heurista 3
+     * Compara el tablero del nodo actual 
+     * retorna el numero de piezas diferentes con respecto 
+     * al tablero Inicial
      * @param nodo
      * @return
      */
@@ -338,9 +342,11 @@ public class BusquedaInformada {
     }
 
     /**
-     * h4
+     * Funcion Heurista 4
+     * Compara el numero de piezas que estan en su
+     * fila o columna pero no en su posicion
      * @param nodo
-     * @return
+     * @return entero
      */
     private int h4PiezasColumnaFila(int nodo[][]){
         int f = 0; // Fichas iguales solo en filas
@@ -361,7 +367,12 @@ public class BusquedaInformada {
         return (f + c);
     }
 
-
+    /**
+     * Funcion que solo evalua las
+     * Heuristicas
+     * @param evalua
+     * @return
+     */
     private float funcionesHs(Sucesor evalua){
         int [][] nodo = evalua.Tablero();
         return  h1DistanciaManhattan(nodo) +

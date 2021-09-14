@@ -43,12 +43,13 @@ public class BusquedaInformada {
 
         // Aregar NODO Inicial a la lista cerrada con g = 0;
         close.add(nodoActual);
-        
+        System.out.println("Entrando a A*");
         // Inicia A*
         // Mientras el NodoFinal no se encuentre en la lista Cerrada
         while (!estaElementoLista(close,tableroFinal)) {
             // último elemento agregado a la lista cerrada
-            nodoActual = close.pollLast();
+            nodoActual = close.getLast();
+
             // Genera los vecinos del nodo actual
             sucesores = generaSucesores(nodoActual);
 
@@ -65,7 +66,7 @@ public class BusquedaInformada {
             for (Sucesor sucesor : neighbors) {
                 sucesor.setPesoHs(funcionesHs(sucesor));
                 sucesor.setValorF(funcionEval(sucesor));
-                sucesor.setPadre(nodoActual.Tablero());
+                sucesor.setPadre(nodoActual);
             }
 
             for (Sucesor sucesor : neighbors) {
@@ -74,7 +75,8 @@ public class BusquedaInformada {
                 if (!estaElementoLista(open, sucesor.Tablero()) && 
                     !estaElementoLista(close, sucesor.Tablero())) {
                     open.add(sucesor);
-                }else{
+                }
+                /*else{
                     if (estaElementoLista(open, sucesor.Tablero())) {
                         Sucesor os = regresaElementoLista(open, sucesor.Tablero());
                         if (sucesor.gnMovimientos() < os.gnMovimientos()) {
@@ -84,22 +86,34 @@ public class BusquedaInformada {
                             // de la lista vecinos
                         }
                     }
-                }
+                }*/
             }
 
             neighbors.clear();
+            float aux = 0;
+            int index = 0;
+            // Elegir nodo con menor f de la lista abierta y
+            // moverlo a la lista cerrada
+            for (int i = 0; i < open.size(); i++) {
+                if (open.get(i).getValorF() > aux) {
+                    index = i;
+                    aux = open.get(i).getValorF();
+                }
+            }
 
-            /**
-             Elegir nodo con menor f de la lista abierta y
-             moverlo a la lista cerrada (si existe
-            empate, el primero de la lista)
-             */
+            close.add(open.remove(index));
         }
-        /**            
+        for (Sucesor sucesor : close) {
+            System.out.println(sucesor.Movimiento());
+            printTablero(sucesor.Tablero());
+        }
+        System.out.println("Termine");
+        /**
         Fin mientras (volver a mientras)
         
         Crear lista ruta corta
-        Lista ruta corta = Invertir (Leer nodo final y trazar ruta por medio de los nodos padres
+        Lista ruta corta = Invertir (Leer nodo final y trazar ruta
+         por medio de los nodos padres
         (p) hasta llegar a nodo inicio)
         Retornar lista ruta corta
          */
@@ -117,14 +131,18 @@ public class BusquedaInformada {
     }
 
     private boolean estaElementoLista(LinkedList<Sucesor> cola, int[][] tablero){
-        for (Sucesor nodo : cola) {
-            if (igual(nodo.Tablero(), tablero)) {
-                return true;
-            }
+        if (cola.stream().anyMatch(nodo -> (igual(nodo.Tablero(), tablero)))) {
+            return true;
         }
         return false;
     }
 
+    /**
+     * Funcion Igualdad entre dos matrices
+     * @param m1
+     * @param m2
+     * @return
+     */
     private boolean igual(int m1[][], int m2[][]){
         for (int i = 0; i < m2.length; i++) {
             for (int j = 0; j < m2.length; j++) {
@@ -226,7 +244,7 @@ public class BusquedaInformada {
         int[] cero = localizaNumero(nodo,0);
         int x = cero[0];
         int y = cero[1];
-        int aux = 0;
+        int aux;
 
         switch (movimiento) {
             case "u" -> {
@@ -257,7 +275,7 @@ public class BusquedaInformada {
                 nuevo[x][y+1] = aux;
             }
         }
-        return new Sucesor(nodo,nuevo, movimiento,padre.gnMovimientos()+1);
+        return new Sucesor(padre,nuevo, movimiento,padre.gnMovimientos()+1);
     }
 
     /**

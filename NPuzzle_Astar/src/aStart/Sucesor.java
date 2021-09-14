@@ -1,7 +1,7 @@
 package aStart;
 
 public class Sucesor {
-    private int[][] nodoPadre;
+    private Sucesor nodoPadre;
     private int tablero[][];
     private String movimiento;
     private int gnMovimientos;
@@ -18,14 +18,14 @@ public class Sucesor {
         this.movimiento = movimiento;
     }
 
-    public Sucesor(int[][] nodoPadre,int tablero[][], String movimiento, int gnMovimientos ){
+    public Sucesor(Sucesor nodoPadre,int tablero[][], String movimiento, int gnMovimientos ){
         this.nodoPadre = nodoPadre;
         this.tablero = tablero;
         this.movimiento = movimiento;
         this.gnMovimientos = gnMovimientos;
     }
 
-    public int[][] getPadre(){
+    public Sucesor getPadre(){
         return this.nodoPadre;
     }
 
@@ -65,7 +65,7 @@ public class Sucesor {
         return this.pesohs;
     }
 
-    public void setPadre(int[][] nPadre){
+    public void setPadre(Sucesor nPadre){
         this.nodoPadre = nPadre;
     }
 

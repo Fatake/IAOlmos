@@ -14,7 +14,7 @@ Ejecutar con Python 3 en adelante
 $ python3 Generador.py -h
 ```
 
-#### Ejecuta Defauld
+#### Ejecuta Default
 
 ```bash
 $ python3 Generador.py -n 3

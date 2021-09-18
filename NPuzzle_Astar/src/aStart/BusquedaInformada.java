@@ -104,10 +104,10 @@ public class BusquedaInformada {
             close.add(open.remove(index));
         }
         for (Sucesor sucesor : close) {
-            System.out.println(sucesor.Movimiento());
-            printTablero(sucesor.Tablero());
+            System.out.print(sucesor.Movimiento()+" ");
+            // printTablero(sucesor.Tablero());
         }
-        System.out.println("Termine");
+        System.out.println("\nTermine");
         /**
         Fin mientras (volver a mientras)
         

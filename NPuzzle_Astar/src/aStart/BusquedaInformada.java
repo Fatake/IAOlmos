@@ -10,9 +10,13 @@ import java.util.List;
 public class BusquedaInformada {
     public int tableroInicial[][]; // Estado Inicial
     public int tableroFinal[][]; // Estado Final
-    public int estadoActual[][];
     public int gContador = 0;
 
+    /**
+     * Constructor, requiere tablero Inicial y Final
+     * @param tableroInicial
+     * @param tableroFinal
+     */
     public BusquedaInformada(int tableroInicial[][],int tableroFinal[][] ){
         this.tableroInicial = tableroInicial;
         this.tableroFinal = tableroFinal;
@@ -26,99 +30,79 @@ public class BusquedaInformada {
         // Lista de movimientos
         List<String> movimientos = new ArrayList<>();
         List<Sucesor> sucesores = new ArrayList<>();
+        LinkedList<Sucesor> open = new LinkedList<Sucesor>();
+        LinkedList<Sucesor> close = new LinkedList<Sucesor>();
+        LinkedList<Sucesor> neighbors = new LinkedList<Sucesor>();
 
         if (igual(tableroInicial, tableroFinal)) {
             System.out.println("[i] Tablero Inicial es igual al final");
             return null;
         }
 
-        LinkedList<Sucesor> open = new LinkedList<Sucesor>();
-        LinkedList<Sucesor> close = new LinkedList<Sucesor>();
-        LinkedList<Sucesor> neighbors = new LinkedList<Sucesor>();
-
         // Paso 1 Seleccion el nodo Inicial
         Sucesor nodoActual = new Sucesor(null, tableroInicial, "", 0);
         nodoActual.setValorF(funcionEval(nodoActual));
         nodoActual.setPesoHs(funcionesHs(nodoActual));
 
-        // Aregar NODO Inicial a la lista cerrada con g = 0;
-        close.add(nodoActual);
+        // Aregar NODO Inicial a la lista abierta con g = 0;
+        open.add(nodoActual);
         System.out.println("Entrando a A*");
-        // Inicia A*
-        // Mientras el NodoFinal no se encuentre en la lista Cerrada
-        while (!estaElementoLista(close,tableroFinal)) {
-            // último elemento agregado a la lista cerrada
-            nodoActual = close.getLast();
 
-            // Genera los vecinos del nodo actual
-            sucesores = generaSucesores(nodoActual);
-
-            // Agregar los nodos vecinos del nodo actual en la 
-            // lista vecinos excepto nodos que estén en la lista cerrada
-            for (Sucesor nSucesor : sucesores) {
-                if (!estaElementoLista(close, nSucesor.Tablero()) ) {
-                    neighbors.add(nSucesor);
-                }
+        // Inicial A* Mientras No se ecuentre el tablero final en Close
+        while (!estaElementoLista(close, tableroFinal)) {
+            // Busca el nodo con menor F de la lista Open
+            int indice = regresaIndexMayorF(open);
+            nodoActual = open.remove(indice);
+            
+            // Lo Agrega a la lista close
+            if (!estaElementoLista(close, nodoActual.Tablero())) {
+                close.add(nodoActual);
             }
 
+            sucesores = generaSucesores(nodoActual);
             // Para todo vecino en la lista calcular
             // g, h, f, padre
-            for (Sucesor sucesor : neighbors) {
+            for (Sucesor sucesor : sucesores) {
                 sucesor.setPesoHs(funcionesHs(sucesor));
                 sucesor.setValorF(funcionEval(sucesor));
                 sucesor.setPadre(nodoActual);
-            }
 
-            for (Sucesor sucesor : neighbors) {
-                // Si el nodo vecino no se encuentra en la
-                //  lista abierta ni en la lista cerrada
-                if (!estaElementoLista(open, sucesor.Tablero()) && 
+                // Si no está en open  y Close Agregar a Close
+                if (!estaElementoLista(open, sucesor.Tablero()) &&
                     !estaElementoLista(close, sucesor.Tablero())) {
+                    open.remove(sucesor);
+                    close.remove(sucesor);
                     open.add(sucesor);
                 }
-                /*else{
-                    if (estaElementoLista(open, sucesor.Tablero())) {
-                        Sucesor os = regresaElementoLista(open, sucesor.Tablero());
-                        if (sucesor.gnMovimientos() < os.gnMovimientos()) {
-                            sucesor = os;
-                            // Actualizar atributos del nodo de la lista
-                            // abierta con atributos del mismo nodo
-                            // de la lista vecinos
-                        }
-                    }
-                }*/
             }
-
-            neighbors.clear();
-            float aux = 0;
-            int index = 0;
-            // Elegir nodo con menor f de la lista abierta y
-            // moverlo a la lista cerrada
-            for (int i = 0; i < open.size(); i++) {
-                if (open.get(i).getValorF() > aux) {
-                    index = i;
-                    aux = open.get(i).getValorF();
-                }
-            }
-
-            close.add(open.remove(index));
         }
+        
         for (Sucesor sucesor : close) {
             System.out.print(sucesor.Movimiento()+" ");
             // printTablero(sucesor.Tablero());
         }
-        System.out.println("\nTermine");
-        /**
-        Fin mientras (volver a mientras)
-        
-        Crear lista ruta corta
-        Lista ruta corta = Invertir (Leer nodo final y trazar ruta
-         por medio de los nodos padres
-        (p) hasta llegar a nodo inicio)
-        Retornar lista ruta corta
-         */
-        
         return movimientos;
+    }
+
+    public int existeMejor(LinkedList<Sucesor> cola, Sucesor nodo) {
+        for (int i = 0; i < cola.size(); i++) {
+            if (cola.get(i).getValorF() > nodo.getValorF()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int regresaIndexMayorF(LinkedList<Sucesor> cola) {
+        int index = 0;
+        float comparador = 0;
+        for (int i = 0; i < cola.size(); i++) {
+            if (cola.get(i).getValorF() > comparador) {
+                comparador = cola.get(i).getValorF();
+                index = i;
+            }
+        }
+        return index;
     }
 
     /**

@@ -70,8 +70,6 @@ public class BusquedaInformada {
                 // Si no está en open  y Close Agregar a Close
                 if (!estaElementoLista(open, sucesor.Tablero()) &&
                     !estaElementoLista(close, sucesor.Tablero())) {
-                    open.remove(sucesor);
-                    close.remove(sucesor);
                     open.add(sucesor);
                 }
             }
@@ -84,16 +82,7 @@ public class BusquedaInformada {
         return movimientos;
     }
 
-    public int existeMejor(LinkedList<Sucesor> cola, Sucesor nodo) {
-        for (int i = 0; i < cola.size(); i++) {
-            if (cola.get(i).getValorF() > nodo.getValorF()) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public int regresaIndexMayorF(LinkedList<Sucesor> cola) {
+    private int regresaIndexMayorF(LinkedList<Sucesor> cola) {
         int index = 0;
         float comparador = 0;
         for (int i = 0; i < cola.size(); i++) {

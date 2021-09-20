@@ -117,6 +117,11 @@ public class BusquedaInformada {
         return movimientos;
     }
 
+    /**
+     * funcion
+     * @param nodo
+     * @return
+     */
     public List<String> encuentraPath(Sucesor nodo){
         Sucesor nActual = nodo;
         List<String> movimientos = new ArrayList<>();
@@ -133,6 +138,12 @@ public class BusquedaInformada {
         return movimientos;
     }
 
+    /**
+     * retornaIndice Regresa el index de una lista dado un tablero
+     * @param lista
+     * @param tablero
+     * @return
+     */
     private int retornaIndice(LinkedList<Sucesor> lista, int[][] tablero){
         int i = 0;
         for (Sucesor is : lista) {
@@ -177,7 +188,7 @@ public class BusquedaInformada {
 
     /**
      * Funcion generaSucesores
-     * Permite dado un nodo inicial,optener todos los suceroes
+     * Permite dado un nodo inicial,optener todos los Hijos
      * o movimientos posibles
      * retorna una lista de sucesores
      * @param nodo

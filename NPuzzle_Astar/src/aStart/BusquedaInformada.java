@@ -63,8 +63,9 @@ public class BusquedaInformada {
                     return 0;
                 } 
             );
+            
             // Agrega elnodo con el mejor F(n)
-            nodoActual = open.pollLast();
+            nodoActual = open.removeLast();
             
             if (igual(nodoActual.Tablero(), tableroFinal)) {
                 close.add(nodoActual);
@@ -83,7 +84,7 @@ public class BusquedaInformada {
                 // Si no está en open  y Close Agregar a Close
                 if (!estaElementoLista(open, sucesor.Tablero()) &&
                     !estaElementoLista(close, sucesor.Tablero())) {
-                    open.removeIf(nodo -> (igual(nodo.Tablero(), sucesor.Tablero())));
+                    // open.removeIf(nodo -> (igual(nodo.Tablero(), sucesor.Tablero())));
                     open.add(sucesor);
                 }
 

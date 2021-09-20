@@ -2,6 +2,8 @@ package aStart;
 
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +34,6 @@ public class BusquedaInformada {
         List<Sucesor> sucesores = new ArrayList<>();
         LinkedList<Sucesor> open = new LinkedList<Sucesor>();
         LinkedList<Sucesor> close = new LinkedList<Sucesor>();
-        LinkedList<Sucesor> neighbors = new LinkedList<Sucesor>();
 
         if (igual(tableroInicial, tableroFinal)) {
             System.out.println("[i] Tablero Inicial es igual al final");
@@ -40,13 +41,12 @@ public class BusquedaInformada {
         }
 
         // Paso 1 Seleccion el nodo Inicial
-        Sucesor nodoActual = new Sucesor(null, tableroInicial, "", 0);
+        Sucesor nodoActual = new Sucesor(null, tableroInicial, "init", 0);
         nodoActual.setValorF(funcionEval(nodoActual));
         nodoActual.setPesoHs(funcionesHs(nodoActual));
 
         // Aregar NODO Inicial a la lista abierta con g = 0;
         open.add(nodoActual);
-        System.out.println("Entrando a A*");
 
         // Inicial A* Mientras No se ecuentre el tablero final en Close
         while (!estaElementoLista(close, tableroFinal)) {
@@ -54,15 +54,16 @@ public class BusquedaInformada {
             int indice = regresaIndexMayorF(open);
             nodoActual = open.remove(indice);
             
-            // Lo Agrega a la lista close
-            if (!estaElementoLista(close, nodoActual.Tablero())) {
+            if (igual(nodoActual.Tablero(), tableroFinal)) {
                 close.add(nodoActual);
+                movimientos = encuentraPath(nodoActual);
+                break;
             }
 
             sucesores = generaSucesores(nodoActual);
-            // Para todo vecino en la lista calcular
-            // g, h, f, padre
+            // Para todo n' de n
             for (Sucesor sucesor : sucesores) {
+                // Calcular para todo n' g, h, f, padre
                 sucesor.setPesoHs(funcionesHs(sucesor));
                 sucesor.setValorF(funcionEval(sucesor));
                 sucesor.setPadre(nodoActual);
@@ -70,39 +71,82 @@ public class BusquedaInformada {
                 // Si no está en open  y Close Agregar a Close
                 if (!estaElementoLista(open, sucesor.Tablero()) &&
                     !estaElementoLista(close, sucesor.Tablero())) {
+                    open.removeIf(nodo -> (igual(nodo.Tablero(), sucesor.Tablero())));
                     open.add(sucesor);
                 }
+
+                // si ya existe un elemento en Open
+                if(estaElementoLista(open, sucesor.Tablero())){
+                    // y ademas es mejor
+                    int in = retornaIndice(open,sucesor.Tablero());
+                    if (open.get(in).getValorF() > sucesor.getValorF()) {
+                        continue;
+                    }
+                }
+                // Si ya existe un elemento en Close
+                if(estaElementoLista(close, sucesor.Tablero())){
+                    // y ademas es mejor
+                    int in = retornaIndice(close,sucesor.Tablero());
+                    // Si existe una instanvcia mejor en close
+                    // Descartar y continuar
+                    if (close.get(in).getValorF() > sucesor.getValorF()) {
+                        continue;
+                    }else{
+                        close.remove(in);
+                        open.add(sucesor);
+                    }
+                }
             }
-        }
-        
-        for (Sucesor sucesor : close) {
-            System.out.print(sucesor.Movimiento()+" ");
-            // printTablero(sucesor.Tablero());
+            // Lo Agrega a la lista close
+            close.add(nodoActual);
         }
         return movimientos;
     }
 
-    private int regresaIndexMayorF(LinkedList<Sucesor> cola) {
+    public List<String> encuentraPath(Sucesor nodo){
+        Sucesor nActual = nodo;
+        List<String> movimientos = new ArrayList<>();
+        movimientos.add("");
+        while(nActual.getPadre() != null){
+            movimientos.add(nActual.Movimiento());
+            nActual = nActual.getPadre();
+        }
+        Collections.reverse(movimientos);
+        return movimientos;
+    }
+
+    private int regresaIndexMayorF(LinkedList<Sucesor> lista) {
         int index = 0;
         float comparador = 0;
-        for (int i = 0; i < cola.size(); i++) {
-            if (cola.get(i).getValorF() > comparador) {
-                comparador = cola.get(i).getValorF();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getValorF() > comparador) {
+                comparador = lista.get(i).getValorF();
                 index = i;
             }
         }
         return index;
     }
 
+    private int retornaIndice(LinkedList<Sucesor> lista, int[][] tablero){
+        int i = 0;
+        for (Sucesor is : lista) {
+            if (igual(is.Tablero(), tablero)) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     /**
      * Funcion que retorna si un tablero matriz
      * se encuentra en la lista
-     * @param cola
+     * @param lista
      * @param tablero
      * @return
      */
-    private boolean estaElementoLista(LinkedList<Sucesor> cola, int[][] tablero){
-        if (cola.stream().anyMatch(nodo -> (igual(nodo.Tablero(), tablero)))) {
+    private boolean estaElementoLista(LinkedList<Sucesor> lista, int[][] tablero){
+        if (lista.stream().anyMatch(nodo -> (igual(nodo.Tablero(), tablero)))) {
             return true;
         }
         return false;

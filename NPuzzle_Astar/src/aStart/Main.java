@@ -41,15 +41,18 @@ public class Main {
      */
     public static void main(String[] args) {
         BusquedaInformada p ;
-        System.out.println("Programa que explora el Npuzzle con A*");
+        boolean verbose = false;
+        System.out.println("\tPrograma que explora el Npuzzle con A*\n");
 
         // Checa los Argumentos
         if (args.length < 0) {
             System.out.println("[!] No paso un archivo como argumento");
             System.out.println("[i] Uso \n$ java bin file");
             System.exit(1);
+        }if (args.length == 2) {
+            verbose = true;
         }
-
+        List<String> movimientos; 
         List<String> lineasArchivo = lectorArchivo(args[0]);
 
         int tamMatriz = Integer.parseInt(lineasArchivo.get(0));
@@ -81,13 +84,20 @@ public class Main {
         }
         p = new BusquedaInformada(tableroInicial,tableroFinal);
 
-        System.out.println("Tamaño del Tablero: " + tamMatriz);
-        System.out.println("Tablero Inicial:");
-        p.printTablero(tableroInicial);
-        System.out.println("Tablero Final:");
-        p.printTablero(tableroFinal);
+        if (verbose) {
+            System.out.println("Tamaño del Tablero: " + tamMatriz);
+            System.out.println("Tablero Inicial:");
+            p.printTablero(tableroInicial);
+            System.out.println("Tablero Final:");
+            p.printTablero(tableroFinal);
+        }
+        
+        // Lanza el algoritmo A*
+        movimientos = p.aStar();
 
-        // Lanza el algoritmo
-        p.aStar();
+        // Imprime el Path
+        for (String m : movimientos) {
+            System.out.print(m + " ");
+        }
     }
 }

@@ -50,9 +50,10 @@ public class BusquedaInformada {
 
         // Inicial A* Mientras No se ecuentre el tablero final en Close
         while (!estaElementoLista(close, tableroFinal)) {
-            // Busca el nodo con menor F de la lista Open
-            int indice = regresaIndexMayorF(open);
-            nodoActual = open.remove(indice);
+            // Ordena Open del menor al mauyor
+            Collections.sort(open, new OrdenaNodos());
+            // Agrega elnodo con el mejor F(n)
+            nodoActual = open.pollLast();
             
             if (igual(nodoActual.Tablero(), tableroFinal)) {
                 close.add(nodoActual);
@@ -109,22 +110,14 @@ public class BusquedaInformada {
         movimientos.add("");
         while(nActual.getPadre() != null){
             movimientos.add(nActual.Movimiento());
+            movimientos.add(",");
             nActual = nActual.getPadre();
+        }
+        if (movimientos.get(movimientos.size()-1) == ",") {
+            movimientos.remove(movimientos.size()-1);
         }
         Collections.reverse(movimientos);
         return movimientos;
-    }
-
-    private int regresaIndexMayorF(LinkedList<Sucesor> lista) {
-        int index = 0;
-        float comparador = 0;
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getValorF() > comparador) {
-                comparador = lista.get(i).getValorF();
-                index = i;
-            }
-        }
-        return index;
     }
 
     private int retornaIndice(LinkedList<Sucesor> lista, int[][] tablero){
@@ -187,39 +180,39 @@ public class BusquedaInformada {
         // ceroActual[1] = X
         if (ceroActual[0] == 0 && ceroActual[1] == 0) {
             // Equina Superior Izqierda
-            String[] operadores = {"d","r"};   
+            String[] operadores = {"D","R"};   
             opera = operadores;     
         }else if (ceroActual[0] == 0 && ceroActual[1] == nodo.length-1) {
             // Equina Superior Derecha
-            String[] operadores = {"d","l"};   
+            String[] operadores = {"D","L"};   
             opera = operadores; 
         }
         else if (ceroActual[0] == nodo.length-1 && ceroActual[1] == 0) {
             // Equina Inferior Izquierda
-            String[] operadores = {"u","r"};   
+            String[] operadores = {"U","R"};   
             opera = operadores; 
         }else if (ceroActual[0] == nodo.length-1 && ceroActual[1] == nodo.length-1) {
             // Equina Inferior Derecha
-            String[] operadores = {"u","l"};   
+            String[] operadores = {"U","L"};   
             opera = operadores; 
         }else if (ceroActual[0] == 0) {
             // Arista Superior
-            String[] operadores = {"d","r","l"};   
+            String[] operadores = {"D","R","L"};   
             opera = operadores; 
         }else if (ceroActual[0] == nodo.length-1 ) {
             // Arista Inferior
-            String[] operadores = {"u","r","l"};   
+            String[] operadores = {"U","R","L"};   
             opera = operadores; 
         }else if (ceroActual[1] == nodo.length-1) {
             // Arista Derecha
-            String[] operadores = {"u","l","d"};   
+            String[] operadores = {"U","L","D"};   
             opera = operadores; 
         }else if (ceroActual[1] == 0) {
             // Arista Izquierda
-            String[] operadores = {"u","r","d"};   
+            String[] operadores = {"U","R","D"};   
             opera = operadores; 
         }else{
-            String[] operadores = {"u","r","d","l"};   
+            String[] operadores = {"U","R","D","L"};   
             opera = operadores; 
         }
 
@@ -262,28 +255,28 @@ public class BusquedaInformada {
         int aux;
 
         switch (movimiento) {
-            case "u" -> {
+            case "U" -> {
                 // Arriba
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x-1][y];
                 nuevo[x-1][y] = aux;
             }
 
-            case "d" -> {
+            case "D" -> {
                 // Abajo
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x+1][y];
                 nuevo[x+1][y] = aux;
             }
         
-            case "l" -> {
+            case "L" -> {
                 // Izquierda
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x][y-1];
                 nuevo[x][y-1] = aux;
             }
 
-            case "r" -> {
+            case "R" -> {
                 // Derecha
                 aux = nuevo[x][y];
                 nuevo[x][y] = nuevo[x][y+1];

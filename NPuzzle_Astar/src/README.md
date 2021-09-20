@@ -8,7 +8,6 @@ En esta carpeta se explora una solucion con Busqueda Informada (Heuristica) del 
 
 Este programa fue compilado en java `jdk-16.0.2`
 
-
 #### Compilar y ejecutar Manual
 
 ```bash
@@ -19,8 +18,9 @@ $ java aStart.Main entrada.ini
 #### Compilar y Ejecutar en Script
 
 ```bash
-$ chmod 754 ejecuta.sh
-$ ./ejecuta.sh
+$ chmod 754 ejecuta.sh # Hacer solo una vez
+$ ./ejecuta.sh nombreArchivo.ini 
+$ ./ejecuta.sh nombreArchivo.ini -v #Para modo verbose
 ```
 
 ---

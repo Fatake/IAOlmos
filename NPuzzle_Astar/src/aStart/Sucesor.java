@@ -1,5 +1,6 @@
 package aStart;
 
+
 public class Sucesor {
     private Sucesor nodoPadre;
     private int tablero[][];
@@ -96,4 +97,5 @@ public class Sucesor {
     public void setValorF(float n){
         this.valorF = n;
     }
+
 }

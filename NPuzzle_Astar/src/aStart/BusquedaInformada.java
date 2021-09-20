@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -50,8 +51,20 @@ public class BusquedaInformada {
 
         // Inicial A* Mientras No se ecuentre el tablero final en Close
         while (!estaElementoLista(close, tableroFinal)) {
-            // Ordena Open del menor al mauyor
-            Collections.sort(open, new OrdenaNodos());
+            // Ordena Open del menor al mayor
+            Collections.sort(open, new Comparator<Sucesor>(){
+                @Override
+                public int compare(Sucesor o1, Sucesor o2) {
+                    if (o1.getValorF() > o2.getValorF()) {
+                        return -1;
+                    } else if(o1.getValorF() < o2.getValorF()){
+                        return 1;
+                    } else if(o1.getValorF() == o2.getValorF()){
+                        return 0;
+                    }
+                    return 0;
+                } 
+            });
             // Agrega elnodo con el mejor F(n)
             nodoActual = open.pollLast();
             

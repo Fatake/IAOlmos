@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Clase de Busqueda informada
+ * Autor: Paulo Cesar Ruiz Lozano
  */
 public class BusquedaInformada {
     public int tableroInicial[][]; // Estado Inicial

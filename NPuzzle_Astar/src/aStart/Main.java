@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 /**
  * Clase Main
+ * Autor: Paulo Cesar Ruiz Lozano
  */
 public class Main {
     
@@ -99,5 +100,6 @@ public class Main {
         for (String m : movimientos) {
             System.out.print(m + " ");
         }
+        System.out.println();
     }
 }

@@ -93,7 +93,7 @@ public class Main {
         }
         
         // Lanza el algoritmo A*
-        movimientos = p.aStar();
+        movimientos = p.aStar(30);
 
         // Imprime el Path
         for (String m : movimientos) {

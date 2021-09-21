@@ -2,9 +2,7 @@ package aStart;
 
 import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -29,12 +27,12 @@ public class BusquedaInformada {
      * Funcion A*
      * @return
      */
-    public List<String> aStar(){
+    public List<String> aStar(int horizonteLimitado){
         // Lista de movimientos
         List<String> movimientos = new ArrayList<>();
-        List<Sucesor> sucesores = new ArrayList<>();
-        LinkedList<Sucesor> open = new LinkedList<Sucesor>();
-        LinkedList<Sucesor> close = new LinkedList<Sucesor>();
+        List<NodoNPuzzle> sucesores = new ArrayList<>();
+        LinkedList<NodoNPuzzle> open = new LinkedList<NodoNPuzzle>();
+        LinkedList<NodoNPuzzle> close = new LinkedList<NodoNPuzzle>();
 
         if (igual(tableroInicial, tableroFinal)) {
             System.out.println("[i] Tablero Inicial es igual al final");
@@ -42,7 +40,7 @@ public class BusquedaInformada {
         }
 
         // Paso 1 Seleccion el nodo Inicial
-        Sucesor nodoActual = new Sucesor(null, tableroInicial, "init", 0);
+        NodoNPuzzle nodoActual = new NodoNPuzzle(null, tableroInicial, "init", 0);
         nodoActual.setValorF(funcionEval(nodoActual));
         nodoActual.setPesoHs(funcionesHs(nodoActual));
 
@@ -75,7 +73,7 @@ public class BusquedaInformada {
 
             sucesores = generaSucesores(nodoActual);
             // Para todo n' de n
-            for (Sucesor sucesor : sucesores) {
+            for (NodoNPuzzle sucesor : sucesores) {
                 // Calcular para todo n' g, h, f, padre
                 sucesor.setPesoHs(funcionesHs(sucesor));
                 sucesor.setValorF(funcionEval(sucesor));
@@ -121,8 +119,8 @@ public class BusquedaInformada {
      * @param nodo
      * @return
      */
-    public List<String> encuentraPath(Sucesor nodo){
-        Sucesor nActual = nodo;
+    public List<String> encuentraPath(NodoNPuzzle nodo){
+        NodoNPuzzle nActual = nodo;
         List<String> movimientos = new ArrayList<>();
         movimientos.add("");
         while(nActual.getPadre() != null){
@@ -130,7 +128,7 @@ public class BusquedaInformada {
             movimientos.add(",");
             nActual = nActual.getPadre();
         }
-        if (movimientos.get(movimientos.size()-1) == ",") {
+        if (",".equals(movimientos.get(movimientos.size()-1))) {
             movimientos.remove(movimientos.size()-1);
         }
         Collections.reverse(movimientos);
@@ -143,9 +141,9 @@ public class BusquedaInformada {
      * @param tablero
      * @return
      */
-    private int retornaIndice(LinkedList<Sucesor> lista, int[][] tablero){
+    private int retornaIndice(LinkedList<NodoNPuzzle> lista, int[][] tablero){
         int i = 0;
-        for (Sucesor is : lista) {
+        for (NodoNPuzzle is : lista) {
             if (igual(is.Tablero(), tablero)) {
                 return i;
             }
@@ -161,11 +159,8 @@ public class BusquedaInformada {
      * @param tablero
      * @return
      */
-    private boolean estaElementoLista(LinkedList<Sucesor> lista, int[][] tablero){
-        if (lista.stream().anyMatch(nodo -> (igual(nodo.Tablero(), tablero)))) {
-            return true;
-        }
-        return false;
+    private boolean estaElementoLista(LinkedList<NodoNPuzzle> lista, int[][] tablero){
+        return lista.stream().anyMatch(nodo -> (igual(nodo.Tablero(), tablero)));
     }
 
     /**
@@ -193,9 +188,9 @@ public class BusquedaInformada {
      * @param nodo
      * @return
      */
-    private List<Sucesor> generaSucesores(Sucesor padre){
+    private List<NodoNPuzzle> generaSucesores(NodoNPuzzle padre){
         int[][] nodo = padre.Tablero();
-        List<Sucesor> sucesores = new ArrayList<>();
+        List<NodoNPuzzle> sucesores = new ArrayList<>();
         String[] opera;
 
         int[] ceroActual = localizaNumero(nodo,0);
@@ -265,7 +260,7 @@ public class BusquedaInformada {
      * @param movimiento
      * @return
      */
-    private Sucesor aplicaMovimiento(Sucesor padre, String movimiento)throws ArrayIndexOutOfBoundsException {
+    private NodoNPuzzle aplicaMovimiento(NodoNPuzzle padre, String movimiento)throws ArrayIndexOutOfBoundsException {
         int[][] nodo = padre.Tablero();
         int[][] nuevo = new int[nodo.length][nodo.length];
         for (int i = 0; i < nodo.length; i++) { // X
@@ -306,7 +301,7 @@ public class BusquedaInformada {
                 nuevo[x][y+1] = aux;
             }
         }
-        return new Sucesor(padre,nuevo, movimiento,padre.gnMovimientos()+1);
+        return new NodoNPuzzle(padre,nuevo, movimiento,padre.gnMovimientos()+1);
     }
 
     /**
@@ -422,7 +417,7 @@ public class BusquedaInformada {
      * @param evalua
      * @return
      */
-    private float funcionesHs(Sucesor evalua){
+    private float funcionesHs(NodoNPuzzle evalua){
         int [][] nodo = evalua.Tablero();
         return  h1DistanciaManhattan(nodo) +
             h2PiezasFaltantesFinal(nodo) +
@@ -432,11 +427,11 @@ public class BusquedaInformada {
 
     /**
      * Funcionde evaluacion
-     * Requiere de un Nodo Sucesor
+     * Requiere de un Nodo NodoNPuzzle
      * @param evalua
      * @return
      */
-    private float funcionEval(Sucesor evalua){
+    private float funcionEval(NodoNPuzzle evalua){
         int [][] nodo = evalua.Tablero();
         return  evalua.gnMovimientos() + 
             h1DistanciaManhattan(nodo) +

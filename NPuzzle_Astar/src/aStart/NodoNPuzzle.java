@@ -1,8 +1,8 @@
 package aStart;
 
 
-public class Sucesor {
-    private Sucesor nodoPadre;
+public class NodoNPuzzle {
+    private NodoNPuzzle nodoPadre;
     private int tablero[][];
     private String movimiento;
     private int gnMovimientos;
@@ -13,20 +13,20 @@ public class Sucesor {
     private float pesoh4 = 0;
     private float valorF = 0;
 
-    public Sucesor(int nodo[][], String movimiento ){
+    public NodoNPuzzle(int nodo[][], String movimiento ){
         this.nodoPadre = null;
         this.tablero = nodo;
         this.movimiento = movimiento;
     }
 
-    public Sucesor(Sucesor nodoPadre,int tablero[][], String movimiento, int gnMovimientos ){
+    public NodoNPuzzle(NodoNPuzzle nodoPadre,int tablero[][], String movimiento, int gnMovimientos ){
         this.nodoPadre = nodoPadre;
         this.tablero = tablero;
         this.movimiento = movimiento;
         this.gnMovimientos = gnMovimientos;
     }
 
-    public Sucesor getPadre(){
+    public NodoNPuzzle getPadre(){
         return this.nodoPadre;
     }
 
@@ -66,7 +66,7 @@ public class Sucesor {
         return this.pesohs;
     }
 
-    public void setPadre(Sucesor nPadre){
+    public void setPadre(NodoNPuzzle nPadre){
         this.nodoPadre = nPadre;
     }
 

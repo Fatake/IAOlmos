@@ -12,7 +12,9 @@ Este programa fue compilado en java `jdk-16.0.2`
 
 ```bash
 $ javac aStart/Main.java
-$ java aStart.Main entrada.ini
+$ java aStart.Main entrada.ini # Ejecuta con un horizonte limitado de 6000
+$ java aStart.Main entrada.ini 900 # Ejecuta con un horizonte limitado de 900
+$ java aStart.Main entrada.ini 600 -v # Ejecuta modo Verbose
 ```
 
 #### Compilar y Ejecutar en Script
@@ -20,7 +22,8 @@ $ java aStart.Main entrada.ini
 ```bash
 $ chmod 754 ejecuta.sh # Hacer solo una vez
 $ ./ejecuta.sh nombreArchivo.ini 
-$ ./ejecuta.sh nombreArchivo.ini -v #Para modo verbose
+$ ./ejecuta.sh nombreArchivo.ini 6000 #Horizonte Limitado
+$ ./ejecuta.sh nombreArchivo.ini 600 -v #Para modo verbose
 ```
 
 ---
@@ -52,4 +55,12 @@ Ejemplo
 1,2,3
 4,5,6
 7,8,0
+
 ```
+
+
+---
+
+### Extras
+
+Se puede encontrar un generador de **entradas.ini** en la carpeta principal de este repositorio en el paquete [GeneradorTablerosNPuzzle](https://github.com/Fatake/IAOlmos/tree/master/GeneradorTablerosNPuzzlehttps://)

@@ -29,6 +29,7 @@ public class BusquedaInformada {
      * @return
      */
     public List<String> aStar(int horizonteLimitado){
+        int contador = 0;
         // Lista de movimientos
         List<String> movimientos = new ArrayList<>();
         List<NodoNPuzzle> sucesores = new ArrayList<>();
@@ -69,6 +70,11 @@ public class BusquedaInformada {
             if (igual(nodoActual.Tablero(), tableroFinal)) {
                 close.add(nodoActual);
                 movimientos = encuentraPath(nodoActual);
+                break;
+            }else if(contador == horizonteLimitado){
+                System.out.println("[i] No encontre Solucion en el horizonte Limitado");
+                NodoNPuzzle aux = close.getLast();
+                movimientos = encuentraPath(aux);
                 break;
             }
 
@@ -111,6 +117,7 @@ public class BusquedaInformada {
             }
             // Lo Agrega a la lista close
             close.add(nodoActual);
+            contador++;
         }
         return movimientos;
     }

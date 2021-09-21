@@ -63,4 +63,4 @@ Ejemplo
 
 ### Extras
 
-Se puede encontrar un generador de **entradas.ini** en la carpeta principal de este repositorio en el paquete [GeneradorTablerosNPuzzle](https://github.com/Fatake/IAOlmos/tree/master/GeneradorTablerosNPuzzlehttps://)
+Se puede encontrar un generador de **entradas.ini** en la carpeta principal de este repositorio en el paquete [GeneradorTablerosNPuzzle](https://github.com/Fatake/IAOlmos/tree/master/GeneradorTablerosNPuzzle)

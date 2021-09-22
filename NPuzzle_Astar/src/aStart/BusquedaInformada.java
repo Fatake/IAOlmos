@@ -97,8 +97,11 @@ public class BusquedaInformada {
                 if(estaElementoLista(open, sucesor.Tablero())){
                     // y ademas es mejor
                     int in = retornaIndice(open,sucesor.Tablero());
-                    if (open.get(in).getValorF() > sucesor.getValorF()) {
+                    if (open.get(in).getValorF() < sucesor.getValorF()) {
                         continue;
+                    }else{
+                        open.remove(in);
+                        open.add(sucesor);
                     }
                 }
                 // Si ya existe un elemento en Close
@@ -107,7 +110,7 @@ public class BusquedaInformada {
                     int in = retornaIndice(close,sucesor.Tablero());
                     // Si existe una instanvcia mejor en close
                     // Descartar y continuar
-                    if (close.get(in).getValorF() > sucesor.getValorF()) {
+                    if (close.get(in).getValorF() < sucesor.getValorF()) {
                         continue;
                     }else{
                         close.remove(in);

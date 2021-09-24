@@ -13,22 +13,24 @@ public class BusquedaInformada {
     public int tableroInicial[][]; // Estado Inicial
     public int tableroFinal[][]; // Estado Final
     public int gContador = 0;
+    public int horizonte = 300;
 
     /**
      * Constructor, requiere tablero Inicial y Final
      * @param tableroInicial
      * @param tableroFinal
      */
-    public BusquedaInformada(int tableroInicial[][],int tableroFinal[][] ){
+    public BusquedaInformada(int tableroInicial[][],int tableroFinal[][], int horizonte ){
         this.tableroInicial = tableroInicial;
         this.tableroFinal = tableroFinal;
+        this.horizonte = horizonte;
     }
 
     /**
      * Funcion A*
      * @return
      */
-    public List<String> aStar(int horizonteLimitado){
+    public List<String> aStar( ){
         int contador = 0;
         // Lista de movimientos
         List<String> movimientos = new ArrayList<>();
@@ -71,7 +73,8 @@ public class BusquedaInformada {
                 close.add(nodoActual);
                 movimientos = encuentraPath(nodoActual);
                 break;
-            }else if(contador == horizonteLimitado){
+            }else if(nodoActual.gnMovimientos() == this.horizonte){
+                // Horizonte Limitado
                 System.out.println("[i] No encontre Solucion en el horizonte Limitado");
                 NodoNPuzzle aux = close.getLast();
                 movimientos = encuentraPath(aux);
@@ -120,7 +123,6 @@ public class BusquedaInformada {
             }
             // Lo Agrega a la lista close
             close.add(nodoActual);
-            contador++;
         }
         return movimientos;
     }

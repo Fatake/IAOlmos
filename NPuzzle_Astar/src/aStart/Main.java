@@ -41,7 +41,6 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        int horizonte = 6000 ;
         BusquedaInformada p ;
         boolean verbose = false;
         System.out.println("\tPrograma que explora el Npuzzle con A*\n");
@@ -52,11 +51,7 @@ public class Main {
             System.out.println("[i] Uso \n$ java bin file");
             System.exit(1);
         }
-        if (args.length >= 2) {
-            horizonte = Integer.parseInt(args[1]);
-            
-        }
-        if (args.length == 3) {
+        if (args.length == 2) {
             verbose = true;
         }
         List<String> movimientos; 
@@ -89,7 +84,7 @@ public class Main {
             }
             k--;
         }
-        p = new BusquedaInformada(tableroInicial,tableroFinal);
+        p = new BusquedaInformada(tableroInicial,tableroFinal,3000);
 
         if (verbose) {
             System.out.println("Tamaño del Tablero: " + tamMatriz);
@@ -100,7 +95,7 @@ public class Main {
         }
         
         // Lanza el algoritmo A*
-        movimientos = p.aStar(horizonte);
+        movimientos = p.aStar();
 
         // Imprime el Path
         for (String m : movimientos) {

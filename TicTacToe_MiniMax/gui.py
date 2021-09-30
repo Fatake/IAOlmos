@@ -1,4 +1,6 @@
-import os
+from tkinter import *
+from tkinter import messagebox # Caja de texto
+from tkinter import simpledialog
 
 
 def imprimeTablero(tablero):
@@ -155,30 +157,116 @@ def casillasDisponibles():
     print("4, 5, 6 ")
     print("7, 8, 9 \n")
 
+def bloquearBotones():
+    for i in range(0,9):
+        listaBotones[i].config(state="disable")
 
-tablero = {1: ' ', 2: ' ', 3: ' ',
-        4: ' ', 5: ' ', 6: ' ',
-        7: ' ', 8: ' ', 9: ' '}
+def iniciaJuego():
+    for i in range(0,9):
+        listaBotones[i].config(state="normal")
+        listaBotones[i].config(bg="lightgray")
+        listaBotones[i].config(text="-")
+        tablero[i+1] = "n"
 
-imprimeTablero(tablero)
+    turnoElegido = simpledialog.askinteger("Orden","Ingrese 1 para ser el primer jugador o 2 para el segundo")
+    nombre = simpledialog.askstring("jugador1","Escriba su nombre")
 
-while True:
-    clearScreen()
-    turno = int(input("[+] Eliga \"1\" para ser el primer jugador o \"2\" para ser el segundo\n-> "))
-    if turno == 1 or turno == 2 :
-        break
+    if nombre == "":
+        nombre = "null"
+    
+    global jugador1, jugador2
+    if turnoElegido == 1:
+        print("[+] Se eligio primer jugador")
+        jugador1 = nombre
+        jugador2 = "Bob La IA"
+        contadorIATurno = 2
+    else:
+        print("[+] Se eligio segundo jugador")
+        jugador1 = "Bob La IA"
+        jugador2 = nombre
+        contadorIATurno = 1
 
-# 
+    turnoJugador.set("Turno: "+jugador1)
+
+def cambiar(numero):
+    global jugador1,jugador2,contadorTurno
+    print("turno {}".format(contadorTurno))
+    print(numero)
+    print(tablero[numero])
+    if tablero[numero] == "n" and contadorTurno == 1:
+        listaBotones[numero-1].config(text="X")
+        listaBotones[numero-1].config(bg="white")
+        tablero[numero] = "x"
+        contadorTurno = 2
+        turnoJugador.set("Turno: "+jugador2)
+        listaBotones[numero-1].config(state="disable")   
+    elif tablero[numero] == "n" and contadorTurno == 2:
+        listaBotones[numero-1].config(text="O")
+        listaBotones[numero-1].config(bg="lightblue")
+        tablero[numero] = "o"
+        contadorTurno = 1
+        turnoJugador.set("Turno: "+jugador1)
+        listaBotones[numero-1].config(state="disable")   
+     
+# Turno
+contadorTurno = 1
+# Nombres Jugadores
+jugador1 = ""
+jugador2 = "Bob La IA"
+contadorIATurno = 2
+
 jugadorFicha = 'O'
-
 computadoraIA = 'X'
 
-while not checaGana():
-    print("-------------------------------")
-    casillasDisponibles()
-    if turno == 1:
-        movimientoJugador()
-        movimientoComputadora()
-    else:
-        movimientoComputadora()
-        movimientoJugador()
+ventana = Tk()
+ventana.geometry("400x500")
+ventana.title("Tic Tac Toe Minimax RLPC")
+
+listaBotones = [] #Botones del tablero
+turnoJugador = StringVar()
+
+# x, o , n nada
+tablero = {1: 'n', 2: 'n', 3: 'n',
+           4: 'n', 5: 'n', 6: 'n',
+           7: 'n', 8: 'n', 9: 'n'}
+
+
+boton0 = Button(ventana,width=9,height=3,command=lambda: cambiar(1))
+boton1 = Button(ventana,width=9,height=3,command=lambda: cambiar(2))
+boton2 = Button(ventana,width=9,height=3,command=lambda: cambiar(3))
+boton3 = Button(ventana,width=9,height=3,command=lambda: cambiar(4))
+boton4 = Button(ventana,width=9,height=3,command=lambda: cambiar(5))
+boton5 = Button(ventana,width=9,height=3,command=lambda: cambiar(6))
+boton6 = Button(ventana,width=9,height=3,command=lambda: cambiar(7))
+boton7 = Button(ventana,width=9,height=3,command=lambda: cambiar(8))
+boton8 = Button(ventana,width=9,height=3,command=lambda: cambiar(9))
+
+boton0.place(x=50,y=50)
+boton1.place(x=150,y=50)
+boton2.place(x=250,y=50)
+boton3.place(x=50,y=150)
+boton4.place(x=150,y=150)
+boton5.place(x=250,y=150)
+boton6.place(x=50,y=250)
+boton7.place(x=150,y=250)
+boton8.place(x=250,y=250)
+
+listaBotones.append(boton0)
+listaBotones.append(boton1)
+listaBotones.append(boton2)
+listaBotones.append(boton3)
+listaBotones.append(boton4)
+listaBotones.append(boton5)
+listaBotones.append(boton6)
+listaBotones.append(boton7)
+listaBotones.append(boton8)
+
+turnoEtiqueta = Label(ventana,textvariable=turnoJugador).place(x=120,y=20)
+
+iniciar = Button(ventana, bg="#006", fg="white",text="Iniciar Juego", width=15,height=3,command=iniciaJuego).place(x=120,y=350)
+
+bloquearBotones()
+ventana.mainloop()
+
+
+

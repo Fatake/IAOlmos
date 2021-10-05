@@ -53,6 +53,12 @@ public class BusquedaInformada {
 
         // Inicial A* Mientras No se ecuentre el tablero final en Close
         while (!estaElementoLista(close, tableroFinal)) {
+
+            if(open.isEmpty()){
+                NodoNPuzzle aux = close.getLast();
+                movimientos = encuentraPath(aux);
+                break;
+            }
             // Ordena Open del menor al mayor
             Collections.sort(open, ( o1,  o2)-> {
                     if (o1.getValorF() > o2.getValorF()) {

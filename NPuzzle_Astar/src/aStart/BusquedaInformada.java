@@ -76,6 +76,7 @@ public class BusquedaInformada {
             nodoActual = open.removeLast();
             
             if (igual(nodoActual.Tablero(), tableroFinal)) {
+                System.out.println("[i] Camino Encontrado");
                 close.add(nodoActual);
                 movimientos = encuentraPath(nodoActual);
                 break;

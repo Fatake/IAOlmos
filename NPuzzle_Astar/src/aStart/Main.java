@@ -84,7 +84,7 @@ public class Main {
             }
             k--;
         }
-        p = new BusquedaInformada(tableroInicial,tableroFinal,20);
+        p = new BusquedaInformada(tableroInicial,tableroFinal,12);
 
         if (verbose) {
             System.out.println("Tamaño del Tablero: " + tamMatriz);

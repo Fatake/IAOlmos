@@ -13,7 +13,7 @@ public class BusquedaInformada {
     public int tableroInicial[][]; // Estado Inicial
     public int tableroFinal[][]; // Estado Final
     public int gContador = 0;
-    public int horizonte = 300;
+    public int horizonte = 10;
 
     /**
      * Constructor, requiere tablero Inicial y Final
